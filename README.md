@@ -15,7 +15,7 @@ Este sistema está destinado principalmente al **personal administrativo y profe
 
 ## Alcance mínimo comprometido
 
-- Aplicación web.
+- Aplicación web
 - 4 funcionalidades implementadas, con sus pruebas correspondientes.
 - Sin facturación ni manejo de stock.
 
