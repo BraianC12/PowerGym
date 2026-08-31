@@ -11,7 +11,6 @@ Este sistema está destinado principalmente al **personal administrativo y profe
 - Registra, da de baja y modifica socios.
 - Envía un mensaje automático (WhatsApp, email o SMS) al socio X días antes de que venza su cuota.
 - Permite consultar por fecha qué socios están próximos a vencer su membresía.
-- Permite asignar un plan de entrenamiento personalizado a cada socio.
 
 ## Alcance mínimo comprometido
 
