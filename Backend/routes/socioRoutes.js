@@ -4,6 +4,6 @@ const { crearSocio, darDeBajaSocio, obtenerSocios } = require('../controllers/so
 
 router.post('/', crearSocio); 
 router.get('/', obtenerSocios); 
-router.patch('/:id/baja', darDeBajaSocio); 
+router.patch('/:id', darDeBajaSocio); 
 
 module.exports = router;
