@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Power Gym – Entrenadores</title>
+    <link rel="stylesheet" href="/Frontend/css/entrenadores.css" />
+  </head>
+
+  <body>
+    <header>
+      <div class="wrap nav">
+        <div class="logo">POWER<span> GYM</span></div>
+
+        <ul class="menu">
+          <li><a href="./dashboard.html">Inicio</a></li>
+          <li><a href="./dashboard.html">Resumen</a></li>
+          <li><a href="./socios.html">Socios</a></li>
+          <li><a href="./entrenadores.html">Entrenadores</a></li>
+          <li><a href="./vencimientos.html">Vencimientos</a></li>
+          <li><a href="./avisosAutomaticos.html">Avisos Automáticos</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <section class="entrenadores">
+      <div class="wrap">
+        <div class="entrenadores-header">
+          <div>
+            <div class="eyebrow">✦ ADMINISTRACIÓN</div>
+            <h1>Entrenadores</h1>
+            <p>Gestioná los entrenadores y sus planes de entrenamiento.</p>
+          </div>
+
+          <a href="#" class="btn-primary">+ Agregar entrenador</a>
+        </div>
+
+        <div class="entrenadores-info">
+          <div class="info-card">
+            <span>Total de entrenadores</span>
+            <strong>15</strong>
+          </div>
+
+          <div class="info-card">
+            <span>Entrenadores activos</span>
+            <strong>12</strong>
+          </div>
+
+          <div class="info-card">
+            <span>Planes asignados</span>
+            <strong>30</strong>
+          </div>
+        </div>
+
+        <div class="entrenadores-table">
+          <div class="table-header">
+            <h2>Lista de entrenadores</h2>
+
+            <input
+              type="text"
+              placeholder="Buscar entrenador..."
+              class="search"
+            />
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Contacto</th>
+                <th>Especialidad</th>
+                <th>Socios asignados</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Martín Gómez</td>
+                <td>11 4567-1234</td>
+                <td>Musculación</td>
+                <td>18</td>
+                <td>
+                  <span class="status active">Activo</span>
+                </td>
+                <td>
+                  <button class="action-btn">Editar</button>
+                  <button class="action-btn delete">Eliminar</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Lucía Fernández</td>
+                <td>11 3456-7890</td>
+                <td>Funcional</td>
+                <td>12</td>
+                <td>
+                  <span class="status active">Activo</span>
+                </td>
+                <td>
+                  <button class="action-btn">Editar</button>
+                  <button class="action-btn delete">Eliminar</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Diego Rodríguez</td>
+                <td>11 2345-6789</td>
+                <td>Entrenamiento personal</td>
+                <td>8</td>
+                <td>
+                  <span class="status inactive">Inactivo</span>
+                </td>
+                <td>
+                  <button class="action-btn">Editar</button>
+                  <button class="action-btn delete">Eliminar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-logo">POWER<span> GYM</span></div>
+        <p>© 2026 <span>Power Gym</span>. Panel de administración.</p>
+      </div>
+    </footer>
+  </body>
+</html>
