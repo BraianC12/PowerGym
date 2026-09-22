@@ -17,7 +17,7 @@ app.use('/api/staff', administradorRoutes);
 const PORT = process.env.PORT || 3000;
 
 // Sincronizar Base de Datos y arrancar el servidor
-sequelize.sync({ alter: true })
+sequelize.sync()
   .then(() => {
     console.log('Base de datos conectada y sincronizada.');
     app.listen(PORT, () => {
