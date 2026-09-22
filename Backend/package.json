@@ -16,5 +16,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "allowScripts": {
+    "sqlite3@6.0.1": true
+  }
 }
