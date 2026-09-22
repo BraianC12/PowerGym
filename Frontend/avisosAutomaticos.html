@@ -1,0 +1,246 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Power Gym – Avisos Automáticos</title>
+
+    <link rel="stylesheet" href="/Frontend/css/avisosAutomatico.css" />
+  </head>
+
+  <body>
+    <header>
+      <div class="wrap nav">
+        <div class="logo">POWER<span> GYM</span></div>
+
+        <ul class="menu">
+          <li>
+            <a href="./dashboard.html">Inicio</a>
+          </li>
+
+          <li>
+            <a href="./dashboard.html">Resumen</a>
+          </li>
+
+          <li>
+            <a href="./socios.html">Socios</a>
+          </li>
+
+          <li>
+            <a href="./entrenadores.html">Entrenadores</a>
+          </li>
+
+          <li>
+            <a href="./vencimientos.html">Vencimientos</a>
+          </li>
+
+          <li>
+            <a href="./avisosAutomaticos.html">Avisos Automáticos</a>
+          </li>
+        </ul>
+      </div>
+    </header>
+
+    <section class="avisos">
+      <div class="wrap">
+        <!-- ENCABEZADO -->
+
+        <div class="avisos-header">
+          <div>
+            <div class="eyebrow">✦ ADMINISTRACIÓN</div>
+
+            <h1>Avisos Automáticos</h1>
+
+            <p>Gestioná los avisos de vencimiento enviados a los socios.</p>
+          </div>
+        </div>
+
+        <!-- RESUMEN -->
+
+        <div class="avisos-info">
+          <div class="info-card">
+            <span>Avisos pendientes</span>
+
+            <strong>8</strong>
+          </div>
+
+          <div class="info-card">
+            <span>Avisos enviados</span>
+
+            <strong>24</strong>
+          </div>
+
+          <div class="info-card">
+            <span>Avisos de hoy</span>
+
+            <strong>5</strong>
+          </div>
+        </div>
+
+        <!-- CONFIGURACIÓN -->
+
+        <div class="configuracion">
+          <div class="configuracion-header">
+            <h2>Configuración de avisos</h2>
+
+            <p>Definí cuándo y cómo se notificará a los socios.</p>
+          </div>
+
+          <div class="configuracion-grid">
+            <div class="config-item">
+              <label for="diasAviso"> Avisar antes del vencimiento </label>
+
+              <select id="diasAviso">
+                <option value="1">1 día antes</option>
+
+                <option value="3">3 días antes</option>
+
+                <option value="5">5 días antes</option>
+
+                <option value="7" selected>7 días antes</option>
+              </select>
+            </div>
+
+            <div class="config-item">
+              <label for="canalAviso"> Medio de aviso </label>
+
+              <select id="canalAviso">
+                <option value="whatsapp">WhatsApp</option>
+
+                <option value="email">Email</option>
+
+                <option value="sms">SMS</option>
+              </select>
+            </div>
+
+            <div class="config-item">
+              <label> Avisos automáticos </label>
+
+              <div class="checkbox-item">
+                <input type="checkbox" id="avisosActivos" checked />
+
+                <label for="avisosActivos"> Activar avisos automáticos </label>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-primary">Guardar configuración</button>
+        </div>
+
+        <!-- LISTADO DE AVISOS -->
+
+        <div class="avisos-table">
+          <div class="table-header">
+            <div>
+              <h2>Avisos pendientes</h2>
+
+              <p>Socios que deben recibir un aviso de vencimiento.</p>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Socio</th>
+
+                <th>Vencimiento</th>
+
+                <th>Días restantes</th>
+
+                <th>Medio</th>
+
+                <th>Estado</th>
+
+                <th>Acción</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Juan Pérez</td>
+
+                <td>23/09/2026</td>
+
+                <td>2 días</td>
+
+                <td>WhatsApp</td>
+
+                <td>
+                  <span class="status pending"> Pendiente </span>
+                </td>
+
+                <td>
+                  <button class="action-btn">Enviar aviso</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Carolina López</td>
+
+                <td>26/09/2026</td>
+
+                <td>5 días</td>
+
+                <td>WhatsApp</td>
+
+                <td>
+                  <span class="status pending"> Pendiente </span>
+                </td>
+
+                <td>
+                  <button class="action-btn">Enviar aviso</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>María González</td>
+
+                <td>21/09/2026</td>
+
+                <td>Hoy</td>
+
+                <td>Email</td>
+
+                <td>
+                  <span class="status sent"> Enviado </span>
+                </td>
+
+                <td>
+                  <button class="action-btn">Reenviar</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Lucas Fernández</td>
+
+                <td>18/09/2026</td>
+
+                <td>Vencido</td>
+
+                <td>WhatsApp</td>
+
+                <td>
+                  <span class="status failed"> Pendiente </span>
+                </td>
+
+                <td>
+                  <button class="action-btn">Enviar aviso</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-logo">POWER<span> GYM</span></div>
+
+        <p>© 2026 <span>Power Gym</span>. Panel de administración.</p>
+      </div>
+    </footer>
+  </body>
+</html>

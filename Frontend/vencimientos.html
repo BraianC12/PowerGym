@@ -1,0 +1,247 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Power Gym – Vencimientos</title>
+
+    <link rel="stylesheet" href="/Frontend/css/vencimientos.css" />
+  </head>
+
+  <body>
+    <header>
+      <div class="wrap nav">
+        <div class="logo">POWER<span> GYM</span></div>
+
+        <ul class="menu">
+          <li><a href="./dashboard.html">Inicio</a></li>
+          <li><a href="./dashboard.html">Resumen</a></li>
+          <li><a href="./socios.html">Socios</a></li>
+          <li><a href="./entrenadores.html">Entrenadores</a></li>
+          <li><a href="./vencimientos.html">Vencimientos</a></li>
+          <li><a href="./avisosAutomaticos.html">Avisos Automáticos</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <section class="vencimientos">
+      <div class="wrap">
+        <!-- ENCABEZADO -->
+
+        <div class="vencimientos-header">
+          <div>
+            <div class="eyebrow">✦ ADMINISTRACIÓN</div>
+
+            <h1>Vencimientos</h1>
+
+            <p>Consultá los socios próximos a vencer y sus membresías.</p>
+          </div>
+        </div>
+
+        <!-- RESUMEN -->
+
+        <div class="vencimientos-info">
+          <div class="info-card">
+            <span>Vencen hoy</span>
+
+            <strong>3</strong>
+          </div>
+
+          <div class="info-card">
+            <span>Próximos a vencer</span>
+
+            <strong>8</strong>
+          </div>
+
+          <div class="info-card">
+            <span>Socios vencidos</span>
+
+            <strong>5</strong>
+          </div>
+        </div>
+
+        <!-- TABLA -->
+
+        <div class="vencimientos-table">
+          <div class="table-header">
+            <div>
+              <h2>Socios y vencimientos</h2>
+
+              <p>Filtrá los socios según su estado y plan.</p>
+            </div>
+          </div>
+
+          <!-- FILTROS -->
+
+          <div class="filtros">
+            <div class="filtro-busqueda">
+              <label for="buscarSocio"> Buscar socio </label>
+
+              <input
+                type="text"
+                id="buscarSocio"
+                placeholder="Nombre o DNI..."
+              />
+            </div>
+
+            <div class="filtro">
+              <label for="filtroEstado"> Estado </label>
+
+              <select id="filtroEstado">
+                <option value="todos">Todos</option>
+
+                <option value="vigente">Vigente</option>
+
+                <option value="proximo">Próximo a vencer</option>
+
+                <option value="hoy">Vence hoy</option>
+
+                <option value="vencido">Vencido</option>
+              </select>
+            </div>
+
+            <div class="filtro">
+              <label for="filtroPlan"> Plan </label>
+
+              <select id="filtroPlan">
+                <option value="todos">Todos los planes</option>
+
+                <option value="mensual">Mensual</option>
+
+                <option value="trimestral">Trimestral</option>
+
+                <option value="semestral">Semestral</option>
+
+                <option value="anual">Anual</option>
+              </select>
+            </div>
+
+            <div class="filtro">
+              <label for="ordenar"> Ordenar por </label>
+
+              <select id="ordenar">
+                <option value="vencimiento-asc">Vencimiento más cercano</option>
+
+                <option value="vencimiento-desc">Vencimiento más lejano</option>
+
+                <option value="nombre">Nombre</option>
+              </select>
+            </div>
+
+            <button type="button" id="limpiarFiltros">Limpiar filtros</button>
+          </div>
+
+          <!-- TABLA DE SOCIOS -->
+
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+
+                <th>DNI</th>
+
+                <th>Plan</th>
+
+                <th>Vencimiento</th>
+
+                <th>Días restantes</th>
+
+                <th>Estado</th>
+
+                <th>Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Juan Pérez</td>
+
+                <td>38.456.789</td>
+
+                <td>Mensual</td>
+
+                <td>23/09/2026</td>
+
+                <td>2 días</td>
+
+                <td>
+                  <span class="estado proximo"> Próximo </span>
+                </td>
+
+                <td>
+                  <button class="action-btn">Avisar</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>María González</td>
+
+                <td>41.234.567</td>
+
+                <td>Mensual</td>
+
+                <td>21/09/2026</td>
+
+                <td>Hoy</td>
+
+                <td>
+                  <span class="estado hoy"> Vence hoy </span>
+                </td>
+
+                <td>
+                  <button class="action-btn">Avisar</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Lucas Fernández</td>
+
+                <td>36.789.123</td>
+
+                <td>Trimestral</td>
+
+                <td>18/09/2026</td>
+
+                <td>Vencido</td>
+
+                <td>
+                  <span class="estado vencido"> Vencido </span>
+                </td>
+
+                <td>
+                  <button class="action-btn">Avisar</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Carolina López</td>
+
+                <td>40.567.891</td>
+
+                <td>Mensual</td>
+
+                <td>26/09/2026</td>
+
+                <td>5 días</td>
+
+                <td>
+                  <span class="estado proximo"> Próximo </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-logo">POWER<span> GYM</span></div>
+
+        <p>© 2026 <span>Power Gym</span>. Panel de administración.</p>
+      </div>
+    </footer>
+  </body>
+</html>

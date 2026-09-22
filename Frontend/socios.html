@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Power Gym – Socios</title>
+    <link rel="stylesheet" href="/Frontend/css/socio.css" />
+
+    <style>
+      .btn-primary {
+        border: none;
+        cursor: pointer;
+      }
+
+      .form__msg {
+        margin-top: 10px;
+        font-size: 14px;
+      }
+
+      .form__msg.error {
+        color: #c00;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .55);
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+      }
+
+      .modal-card {
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        width: min(400px, 90vw);
+      }
+
+      .modal-card h2 {
+        margin-bottom: 20px;
+        font-size: 22px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 13px;
+        color: #777;
+        margin-bottom: 5px;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #dddddd;
+        border-radius: 6px;
+        outline: none;
+      }
+
+      .form-group input:focus {
+        border-color: #FF5A36;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .modal-actions .btn-secondary {
+        background: #eee;
+        color: #252525;
+      }
+
+      .empty {
+        text-align: center;
+        color: #777;
+        padding: 25px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="wrap nav">
+        <div class="logo">POWER<span> GYM</span></div>
+
+        <ul class="menu">
+          <li><a href="./dashboard.html">Inicio</a></li>
+          <li><a href="./dashboard.html">Resumen</a></li>
+          <li><a href="./socios.html">Socios</a></li>
+          <li><a href="./entrenadores.html">Entrenadores</a></li>
+          <li><a href="./vencimientos.html">Vencimientos</a></li>
+          <li><a href="./avisosAutomaticos.html">Avisos Automáticos</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <section class="socios">
+      <div class="wrap">
+        <div class="socios-header">
+          <div>
+            <div class="eyebrow">✦ ADMINISTRACIÓN</div>
+            <h1>Socios</h1>
+            <p>Gestioná los socios registrados en Power Gym.</p>
+          </div>
+
+          <button id="btnAgregarSocio" class="btn-primary">+ Agregar socio</button>
+        </div>
+
+        <div class="socios-info">
+          <div class="info-card">
+            <span>Total de socios</span>
+            <strong id="totalSocios">0</strong>
+          </div>
+
+          <div class="info-card">
+            <span>Socios activos</span>
+            <strong id="sociosActivos">0</strong>
+          </div>
+
+          <div class="info-card">
+            <span>Próximos vencimientos</span>
+            <strong>15</strong>
+          </div>
+        </div>
+
+        <div class="socios-table">
+          <div class="table-header">
+            <h2>Lista de socios</h2>
+
+            <input type="text" placeholder="Buscar socio..." class="search" />
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Contacto</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody id="tablaSocios"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal: agregar socio -->
+    <div id="modalSocio" class="modal">
+      <form id="formSocio" class="modal-card">
+        <h2>Agregar socio</h2>
+
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" required />
+        </div>
+
+        <div class="form-group">
+          <label for="apellido">Apellido</label>
+          <input type="text" id="apellido" name="apellido" required />
+        </div>
+
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" name="telefono" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+
+        <div id="form-msg-socio" class="form__msg"></div>
+
+        <div class="modal-actions">
+          <button type="button" id="btnCerrarModal" class="btn-primary btn-secondary">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-logo">POWER<span> GYM</span></div>
+        <p>© 2026 <span>Power Gym</span>. Panel de administración.</p>
+      </div>
+    </footer>
+
+    <script src="js/socios.js"></script>
+  </body>
+</html>
