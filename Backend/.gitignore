@@ -1,3 +1,6 @@
 node_modules/
 .env
 powergym.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
