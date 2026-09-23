@@ -1,4 +1,4 @@
-const { Persona, Socio } = require('../models');
+const { Persona, Socio,sequelize } = require('../models');
 
 const crearSocio = async (req, res) => {
   try {
@@ -28,10 +28,11 @@ const crearSocio = async (req, res) => {
     }
 
     
-    const nuevaPersona = await Persona.create({ nombre, apellido, telefono, email });
-    
-    //Instanciamos y guardamos el objeto Hijo (Socio) vinculándolo al Padre
-    const nuevoSocio = await Socio.create({ socioId: nuevaPersona.personaId });
+const { nuevaPersona, nuevoSocio } = await sequelize.transaction(async (transaction) => {
+    const nuevaPersona = await Persona.create({nombre,apellido,telefono,email},{transaction})
+    const nuevoSocio = await Socio.create({socioId: nuevaPersona.personaId},{transaction})
+    return { nuevaPersona, nuevoSocio }})
+
 
     res.status(201).json({ 
       mensaje: 'Socio creado exitosamente', 

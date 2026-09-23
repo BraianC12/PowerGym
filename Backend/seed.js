@@ -1,5 +1,6 @@
 const sequelize = require('./config/database'); 
 const { Persona, Administrador } = require('./models'); 
+const bcrypt = require('bcryptjs');
 
 const cargarSemillas = async () => {
     try {
@@ -7,14 +8,16 @@ const cargarSemillas = async () => {
 
         const adminExistente = await Administrador.findOne({ where: { nombreUsuario: 'admin_dueno' } });
         if (!adminExistente) {
+            
             console.log('Creando datos semilla: ');
+            const contrasenaHash = await bcrypt.hash('clave123', 12);
 
             // crear Dueño
             const personaDueno = await Persona.create({ 
                 nombre: 'Carlos', apellido: 'Gómez', telefono: '1100000001', email: 'dueno@powergym.com' 
             });
             await Administrador.create({ 
-                nombreUsuario: 'admin_dueno', contrasena: 'clave123', rol: 'Dueño', personaId: personaDueno.personaId
+                nombreUsuario: 'admin_dueno', contrasena: contrasenaHash, rol: 'Dueño', administradorId: personaDueno.personaId
             });
 
             // crear Profesor 1
@@ -22,7 +25,7 @@ const cargarSemillas = async () => {
                 nombre: 'Laura', apellido: 'Martínez', telefono: '1100000002', email: 'laura@powergym.com' 
             });
             await Administrador.create({ 
-                nombreUsuario: 'profe_laura', contrasena: 'clave123', rol: 'Profesor', personaId: personaProfe1.personaId
+                nombreUsuario: 'profe_laura', contrasena: contrasenaHash, rol: 'Profesor', administradorId: personaProfe1.personaId
             });
 
             // crear Profesor 2
@@ -30,7 +33,7 @@ const cargarSemillas = async () => {
                 nombre: 'Martín', apellido: 'López', telefono: '1100000003', email: 'martin@powergym.com' 
             });
             await Administrador.create({ 
-                nombreUsuario: 'profe_martin', contrasena: 'clave123', rol: 'Profesor', personaId: personaProfe2.personaId
+                nombreUsuario: 'profe_martin', contrasena: contrasenaHash, rol: 'Profesor', administradorId: personaProfe2.personaId
             });
 
             console.log('Datos semilla creados correctamente.');
