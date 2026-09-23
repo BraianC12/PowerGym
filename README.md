@@ -28,4 +28,4 @@ Este sistema está destinado principalmente al **personal administrativo y profe
 
 ## Roles de usuario
 
-- Personal administrativo / Profesores
+- Personal administrativo / Profesores.
