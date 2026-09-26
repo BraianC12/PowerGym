@@ -20,8 +20,8 @@ Socio.hasMany(Suscripcion, { foreignKey: 'socioId' });
 Suscripcion.belongsTo(Socio, { foreignKey: 'socioId' });
 
 // Una Membresia (Plan) corresponde a muchas Suscripciones
-Membresia.hasMany(Suscripcion, { foreignKey: 'membresiaId' });
-Suscripcion.belongsTo(Membresia, { foreignKey: 'membresiaId' });
+Membresia.hasMany(Suscripcion, { foreignKey: 'membresiaId', as:"Suscripciones" });
+Suscripcion.belongsTo(Membresia, { foreignKey: 'membresiaId', as: "Membresia" });
 
 // Una Suscripcion genera muchas Notificaciones (avisos)
 Suscripcion.hasMany(Notificacion, { foreignKey: 'suscripcionId' });
