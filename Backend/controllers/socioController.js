@@ -82,4 +82,46 @@ const obtenerSocios = async (req, res) => {
   }
 };
 
-module.exports = { crearSocio, darDeBajaSocio, obtenerSocios };
+const editarSocio = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nombre, apellido, dni, telefono, email } = req.body;
+    
+    //buscar al socio
+    const socio = await Socio.findByPk(id, {
+      include: [{ model: Persona }]
+    });
+
+    if (!socio) {
+      return res.status(404).json({ error: "Socio no encontrado." });
+    }
+
+    //validar si el nuevo email ya existe en otra persona (evita duplicadosa)
+    if (email && email !== socio.Persona.email) {
+      const emailExistente = await Persona.findOne({ where: { email } });
+      if (emailExistente) {
+        return res.status(400).json({ error: "El correo electronico ya está en uso" });
+      }
+    }
+
+    //actualizar la informacion
+    await socio.Persona.update({
+      nombre: nombre || socio.Persona.nombre,
+      apellido: apellido || socio.Persona.apellido,
+      dni: dni || socio.Persona.dni,
+      telefono: telefono || socio.Persona.telefono,
+      email: email || socio.Persona.email
+    });
+
+    return res.status(200).json({
+      mensaje: "Datos del socio actualizados correctamente",
+      socio: socio
+    });
+
+  } catch (error) {
+    console.error("Error al actualizar el socio:", error);
+    return res.status(500).json({ error: "Error interno al modificar los datos."});
+  };
+}
+
+module.exports = { crearSocio, darDeBajaSocio, obtenerSocios, editarSocio };
