@@ -73,7 +73,6 @@ const darDeBajaSocio = async (req, res) => {
 const obtenerSocios = async (req, res) => {
   try {
     const socios = await Socio.findAll({
-      where: { estado: 'Activo' },
       include: [{ model: Persona }] // Trae los datos heredados
     });
     res.json(socios);
