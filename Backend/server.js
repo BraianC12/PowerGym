@@ -3,18 +3,19 @@ const { sequelize } = require('./models');
 const socioRoutes = require('./routes/socioRoutes');
 const cors = require('cors');
 const administradorRoutes = require('./routes/administradorRoutes');
+const suscripcionRoutes = require('./routes/vencimientosRoutes');
+
 require('dotenv').config();
 
 const app = express();
 
-// Middleware para que Express entienda JSON
+
 app.use(express.json());
-//sin los headers CORS la petición se rechaza. app.use(cors()) 
 app.use(cors());
 // Rutas de la API
 app.use('/api/socios', socioRoutes);
 app.use('/api/staff', administradorRoutes);
-
+app.use('/api/suscripciones', suscripcionRoutes);
 
 const PORT = process.env.PORT || 3000;
 
