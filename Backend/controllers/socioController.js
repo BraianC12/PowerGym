@@ -1,8 +1,8 @@
-const { Persona, Socio,sequelize } = require('../models');
+const { Persona, Socio,Suscripcion,Membresia,sequelize } = require('../models');
 
 const crearSocio = async (req, res) => {
   try {
-    const { nombre, apellido, telefono, email } = req.body;
+    const { nombre, apellido, telefono, email } = req.body||{};
 
     if(!nombre || !apellido || !email) {
       return res.status(400).json({
@@ -82,6 +82,17 @@ const obtenerSocios = async (req, res) => {
   }
 };
 
+
+const obtenerSocioPorId=async(req,res)=>{
+  try{
+    const socio=await Socio.findByPk(req.params.id,{include:[{model:Persona},{model:Suscripcion,include:[{model:Membresia,as:"Membresia"}]}]})
+
+    if(!socio){return res.status(404).json({error:"Socio no encontrado"})} return res.json(socio)
+  }catch (error){return res.status(500).json({error:"Error al obtener el socio", detalle:error.message})}
+}
+
+
+
 const editarSocio = async (req, res) => {
   try {
     const { id } = req.params;
@@ -124,4 +135,4 @@ const editarSocio = async (req, res) => {
   };
 }
 
-module.exports = { crearSocio, darDeBajaSocio, obtenerSocios, editarSocio };
+module.exports = { crearSocio, darDeBajaSocio, obtenerSocios, obtenerSocioPorId,editarSocio };
