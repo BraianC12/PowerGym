@@ -4,7 +4,7 @@ const { crearSocio, darDeBajaSocio, obtenerSocios, obtenerSocioPorId, editarSoci
 
 router.post('/', crearSocio); 
 router.get('/', obtenerSocios); 
-router.get('/:id',obtenerSocioPorId)
+router.get('/:id',obtenerSocioPorId);
 router.patch('/:id', darDeBajaSocio); 
 
 

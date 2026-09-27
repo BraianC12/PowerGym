@@ -28,4 +28,90 @@ const crearStaff = async (req, res) => {
         return res.status(500).json({error: "Error interno del servidor al procesar el registro." });
     }
 }
-module.exports = {crearStaff};
+
+const editarStaff = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nombre, apellido, telefono, email, nombreUsuario, rol, contrasena } = req.body;
+
+        //buscamos al Administrador
+        const admin = await Administrador.findByPk(id, {
+            include: [{ model: Persona }]
+        });
+
+        if (!admin) {
+            return res.status(404).json({ error: "Miembro del staff no encontrado."});
+        }
+
+        //Validar que el nuevo email no pise el de otra Persona existente
+        if (email && email !== admin.Persona.email) {
+            const emailExistente = await Persona.findOne({ where: { email } });
+            if (emailExistente) {
+                return res.status(400).json({ error: "El correo electronico ya está en uso por otro usuario" });
+            }
+        }
+
+        //validar que el nombreUsuario no esté en uso por otro Administrador
+        if (nombreUsuario && nombreUsuario !== admin.nombreUsuario) {
+            const usuarioExistente = await Administrador.findOne({ where: {nombreUsuario} });
+            if (usuarioExistente) {
+                return res.status(400).json({ error: "El nombre de usuario ya está en uso" });
+            }
+        }
+
+        await admin.Persona.update({
+            nombre: nombre || admin.Persona.nombre,
+            apellido: apellido || admin.Persona.apellido,
+            telefono: telefono || admin.Persona.telefono,
+            email: email || admin.Persona.email
+        });
+
+        await admin.update({
+            nombreUsuario: nombreUsuario || admin.nombreUsuario,
+            rol: rol || admin.rol,
+            contrasena: contrasena || admin.contrasena
+        });
+
+        return res.status(200).json({
+            mensaje: "Datos del staff actualizados correctamente",
+            staff: admin
+        });
+
+    } catch (error) {
+        console.error("Error al actualizar el staff:", error);
+        return res.status(500).json({ error: "Error interno al modificar los datos del staff." });
+    }
+};
+
+const darDeBajaStaff = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        //buscamos al administrador por su ID
+        const admin = await Administrador.findByPk(id);
+
+        if (!admin) {
+            return res.status(404).json({ error: "Miembro del staff no encontrado." });
+        }
+
+        //si ya está inactivo, podemos avisarlo
+        if (admin.estado === 'Inactivo') {
+            return res.status(400).json({ mensaje: "El miembro del staff ya se encuentra inactivo." });
+        }
+
+        //cambiamos el estado y guardamos
+        admin.estado = 'Inactivo';
+        await admin.save();
+
+        return res.status(200).json({
+            mensaje: "Miembro del staff dado de baja correctamente",
+            staff: admin
+        });
+
+    } catch (error) {
+        console.error("Error al dar de baja al staff:", error);
+        return res.status(500).json({ error: "Error interno al procesar la baja." });
+    }
+};
+
+module.exports = {crearStaff, editarStaff, darDeBajaStaff};
