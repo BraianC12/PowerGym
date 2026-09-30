@@ -28,7 +28,31 @@ const crearStaff = async (req, res) => {
         return res.status(500).json({error: "Error interno del servidor al procesar el registro." });
     }
 }
+const obtenerEntrenadores = async (req, res) => {
+    try {
+        const entrenadores = await Administrador.findAll({
+            where: {
+                rol: 'Profesor'
+            },
+            include: [
+                {
+                    model: Persona
+                }
+            ]
+        });
 
+        return res.status(200).json({
+            entrenadores
+        });
+
+    } catch (error) {
+        console.error("Error al obtener los entrenadores:", error);
+
+        return res.status(500).json({
+            error: "Error interno del servidor al obtener los entrenadores."
+        });
+    }
+};
 const editarStaff = async (req, res) => {
     try {
         const { id } = req.params;
@@ -114,4 +138,4 @@ const darDeBajaStaff = async (req, res) => {
     }
 };
 
-module.exports = {crearStaff, editarStaff, darDeBajaStaff};
+module.exports = {crearStaff,obtenerEntrenadores, editarStaff, darDeBajaStaff};

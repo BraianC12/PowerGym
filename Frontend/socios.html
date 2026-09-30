@@ -5,85 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Power Gym – Socios</title>
     <link rel="stylesheet" href="/Frontend/css/socio.css" />
-
-    <style>
-      .btn-primary {
-        border: none;
-        cursor: pointer;
-      }
-
-      .form__msg {
-        margin-top: 10px;
-        font-size: 14px;
-      }
-
-      .form__msg.error {
-        color: #c00;
-      }
-
-      .modal {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, .55);
-        align-items: center;
-        justify-content: center;
-        z-index: 100;
-      }
-
-      .modal-card {
-        background: #fff;
-        padding: 30px;
-        border-radius: 8px;
-        width: min(400px, 90vw);
-      }
-
-      .modal-card h2 {
-        margin-bottom: 20px;
-        font-size: 22px;
-      }
-
-      .form-group {
-        margin-bottom: 15px;
-      }
-
-      .form-group label {
-        display: block;
-        font-size: 13px;
-        color: #777;
-        margin-bottom: 5px;
-      }
-
-      .form-group input {
-        width: 100%;
-        padding: 10px 12px;
-        border: 1px solid #dddddd;
-        border-radius: 6px;
-        outline: none;
-      }
-
-      .form-group input:focus {
-        border-color: #FF5A36;
-      }
-
-      .modal-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        margin-top: 20px;
-      }
-
-      .modal-actions .btn-secondary {
-        background: #eee;
-        color: #252525;
-      }
-
-      .empty {
-        text-align: center;
-        color: #777;
-        padding: 25px;
-      }
-    </style>
   </head>
 
   <body>
@@ -94,9 +15,13 @@
         <ul class="menu">
           <li><a href="./dashboard.html">Inicio</a></li>
           <li><a href="./dashboard.html">Resumen</a></li>
-          <li><a href="./socios.html">Socios</a></li>
+          <li>
+            <a href="./socios.html" class="active" aria-current="page"
+              >Socios</a
+            >
+          </li>
           <li><a href="./entrenadores.html">Entrenadores</a></li>
-          <li><a href="./vencimientos.html">Vencimientos</a></li>
+          <li><a href="./suscripciones.html">Suscripciones</a></li>
           <li><a href="./avisosAutomaticos.html">Avisos Automáticos</a></li>
         </ul>
       </div>
@@ -111,90 +36,293 @@
             <p>Gestioná los socios registrados en Power Gym.</p>
           </div>
 
-          <button id="btnAgregarSocio" class="btn-primary">+ Agregar socio</button>
+          <button id="btnAgregarSocio" class="btn-primary">
+            + Agregar socio
+          </button>
         </div>
-
         <div class="socios-info">
-          <div class="info-card">
-            <span>Total de socios</span>
-            <strong id="totalSocios">0</strong>
-          </div>
 
           <div class="info-card">
-            <span>Socios activos</span>
-            <strong id="sociosActivos">0</strong>
+            <span class="stat-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+                <circle cx="10" cy="7" r="4" />
+                <path d="M21 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </span>
+
+            <div class="stat-body">
+              <span>Total de socios</span>
+              <strong id="totalSocios">0</strong>
+              <small>Registrados en el gimnasio</small>
+            </div>
           </div>
 
-          <div class="info-card">
-            <span>Próximos vencimientos</span>
-            <strong>15</strong>
+
+          <div class="info-card ok">
+            <span class="stat-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="m8 12 3 3 5-6" />
+              </svg>
+            </span>
+
+            <div class="stat-body">
+              <span>Socios activos</span>
+              <strong id="sociosActivos">0</strong>
+              <small>Con cuota al día</small>
+            </div>
           </div>
-        </div>
+
+        </div> 
+
 
         <div class="socios-table">
+
           <div class="table-header">
             <h2>Lista de socios</h2>
 
-            <input type="text" placeholder="Buscar socio..." class="search" />
+            <div class="search-wrap">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+
+              <input
+                type="text"
+                id="buscarSocio"
+                placeholder="Buscar socio..."
+                class="search"
+                aria-label="Buscar socio"
+              />
+            </div>
           </div>
 
-          <table>
+          <div
+  class="chips"
+  id="filtros"
+  role="group"
+  aria-label="Filtrar por estado"
+>
+  <button
+    type="button"
+    class="chip"
+    data-filtro="todos"
+    aria-pressed="true"
+  >
+    Todos
+  </button>
+
+  <button
+    type="button"
+    class="chip"
+    data-filtro="activo"
+    aria-pressed="false"
+  >
+    Activos
+  </button>
+
+  <button
+    type="button"
+    class="chip"
+    data-filtro="inactivo"
+    aria-pressed="false"
+  >
+    Inactivos
+  </button>
+</div>
+          </div>
+
+          <table id="tablaWrap">
             <thead>
               <tr>
                 <th>Nombre</th>
                 <th>Contacto</th>
+                <th>Email</th>
                 <th>Estado</th>
                 <th>Acciones</th>
+
               </tr>
             </thead>
 
             <tbody id="tablaSocios"></tbody>
           </table>
+
+          <div id="sinResultados" class="no-results">
+            Ningún socio coincide con la búsqueda o el filtro.
+          </div>
+
+          <div id="estadoVacio" class="empty-state">
+            <div class="empty-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M6.5 6.5v11" />
+                <path d="M17.5 6.5v11" />
+                <path d="M3.5 9v6" />
+                <path d="M20.5 9v6" />
+                <path d="M6.5 12h11" />
+              </svg>
+            </div>
+
+            <h3>Todavía no hay socios</h3>
+
+            <p>
+              Agregá el primero para empezar a controlar cuotas y vencimientos.
+            </p>
+
+            <button type="button" id="btnVacioAgregar" class="btn-primary">
+              + Agregar primer socio
+            </button>
+          </div>
+
         </div>
-      </div>
-    </section>
+    
+     
 
     <!-- Modal: agregar socio -->
     <div id="modalSocio" class="modal">
       <form id="formSocio" class="modal-card">
         <h2>Agregar socio</h2>
-
+    
         <div class="form-group">
           <label for="nombre">Nombre</label>
           <input type="text" id="nombre" name="nombre" required />
         </div>
-
+    
         <div class="form-group">
           <label for="apellido">Apellido</label>
           <input type="text" id="apellido" name="apellido" required />
         </div>
-
+    
         <div class="form-group">
           <label for="telefono">Teléfono</label>
           <input type="text" id="telefono" name="telefono" />
         </div>
-
+    
         <div class="form-group">
           <label for="email">Email</label>
           <input type="email" id="email" name="email" required />
         </div>
-
+    
         <div id="form-msg-socio" class="form__msg"></div>
-
+    
         <div class="modal-actions">
-          <button type="button" id="btnCerrarModal" class="btn-primary btn-secondary">Cancelar</button>
+          <button type="button" id="btnCerrarModal" class="btn-primary btn-secondary">
+            Cancelar
+          </button>
           <button type="submit" class="btn-primary">Guardar</button>
         </div>
       </form>
     </div>
+    </div>
+    <!-- Modal: editar socio -->
+<div id="modalEditarSocio" class="modal">
 
+  <form id="formEditarSocio" class="modal-card">
+
+    <h2>Editar socio</h2>
+
+    <div class="form-group">
+      <label for="editarNombre">Nombre</label>
+      <input
+        type="text"
+        id="editarNombre"
+        name="nombre"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="editarApellido">Apellido</label>
+      <input
+        type="text"
+        id="editarApellido"
+        name="apellido"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="editarTelefono">Teléfono</label>
+      <input
+        type="text"
+        id="editarTelefono"
+        name="telefono"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="editarEmail">Email</label>
+      <input
+        type="email"
+        id="editarEmail"
+        name="email"
+        required
+      />
+    </div>
+
+    <div id="form-msg-editar" class="form__msg"></div>
+
+    <div class="modal-actions">
+
+      <button
+        type="button"
+        id="btnCerrarEditar"
+        class="btn-primary btn-secondary"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        class="btn-primary"
+      >
+        Guardar cambios
+      </button>
+
+    </div>
+
+  </form>
+</div>
     <footer>
       <div class="wrap">
         <div class="footer-logo">POWER<span> GYM</span></div>
         <p>© 2026 <span>Power Gym</span>. Panel de administración.</p>
-      </div>
+      
     </footer>
 
-    <script src="js/socios.js"></script>
+<script type="module" src="/Frontend/js/socio.js"></script>
+
+
+
   </body>
 </html>
