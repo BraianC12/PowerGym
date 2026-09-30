@@ -4,7 +4,11 @@ import {
   crearSocio,
   editarSocio,
   darDeBajaSocio,
-} from "./conexiones/sociosApi.js";
+} from "../api/sociosApi.js";
+
+// ---- Componentes ----
+import { $, esc } from "../components/dom.js";
+import { abrir, cerrar, conectarCierre } from "../components/modal.js";
 
 // ---- Variables ----
 
@@ -13,8 +17,6 @@ let filtroEstado = "todos";
 let cargaOk = false;
 
 // ---- Elementos del HTML ----
-
-const $ = (id) => document.getElementById(id);
 
 const tbody = $("tablaSocios");
 const mensaje = $("sinResultados");
@@ -31,22 +33,8 @@ const MSG_ERROR =
 
 
 // ======================================================
-// HELPERS
+// HELPERS PROPIOS DE LA VISTA
 // ======================================================
-
-function esc(texto) {
-  return String(texto ?? "").replace(
-    /[&<>"']/g,
-    (c) =>
-      ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;",
-      })[c],
-  );
-}
 
 function claseEstado(estado) {
   const t = String(estado || "").toLowerCase();
@@ -65,13 +53,6 @@ function claseEstado(estado) {
 
 function esInactivo(socio) {
   return claseEstado(socio && socio.estado) === "inactivo";
-}
-
-function iniciales(p) {
-  return (
-    ((p.nombre || "")[0] || "").toUpperCase() +
-    ((p.apellido || "")[0] || "").toUpperCase()
-  );
 }
 
 
@@ -309,34 +290,22 @@ $("btnVacioAgregar").addEventListener("click", () => {
 
 const modal = $("modalSocio");
 const btnAgregar = $("btnAgregarSocio");
-const btnCerrar = $("btnCerrarModal");
 const formSocio = $("formSocio");
+
+
+function limpiarModal() {
+  formSocio.reset();
+}
 
 
 // Abrir modal
 btnAgregar.addEventListener("click", () => {
-  modal.style.display = "flex";
+  abrir(modal);
 });
 
 
-// Cerrar modal
-btnCerrar.addEventListener("click", cerrarModal);
-
-
-// Cerrar haciendo click afuera
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    cerrarModal();
-  }
-});
-
-
-// Función cerrar modal
-function cerrarModal() {
-  modal.style.display = "none";
-
-  formSocio.reset();
-}
+// Cerrar con el botón y haciendo click afuera
+conectarCierre(modal, $("btnCerrarModal"), limpiarModal);
 
 
 // ======================================================
@@ -377,7 +346,9 @@ formSocio.addEventListener("submit", async (e) => {
 
     msg.textContent = "";
 
-    cerrarModal();
+    cerrar(modal);
+
+    limpiarModal();
 
     cargarSocios();
 
@@ -456,7 +427,7 @@ function abrirEditarSocio(socioId) {
     "form__msg";
 
 
-  modalEditar.style.display = "flex";
+  abrir(modalEditar);
 }
 
 
@@ -464,29 +435,14 @@ function abrirEditarSocio(socioId) {
 // CERRAR EDITAR
 // ======================================================
 
-btnCerrarEditar.addEventListener(
-  "click",
-  cerrarModalEditar,
-);
-
-
-modalEditar.addEventListener("click", (e) => {
-
-  if (e.target === modalEditar) {
-
-    cerrarModalEditar();
-  }
-});
-
-
-function cerrarModalEditar() {
-
-  modalEditar.style.display = "none";
-
+function limpiarModalEditar() {
   formEditar.reset();
 
   socioEditandoId = null;
 }
+
+
+conectarCierre(modalEditar, btnCerrarEditar, limpiarModalEditar);
 
 
 // ======================================================
@@ -544,7 +500,10 @@ formEditar.addEventListener(
       );
 
 
-      cerrarModalEditar();
+      cerrar(modalEditar);
+
+
+      limpiarModalEditar();
 
 
       await cargarSocios();

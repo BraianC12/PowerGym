@@ -4,7 +4,11 @@ import {
     crearEntrenador,
     editarEntrenador,
     darDeBajaEntrenador
-} from "./conexiones/entrenadoresApi.js";
+} from "../api/entrenadoresApi.js";
+
+import { notificacion } from "../components/notifications.js";
+
+import { abrir, cerrar } from "../components/modal.js";
 
 
 // ==========================
@@ -55,40 +59,11 @@ const btnCancelarConfirmacion =
 
 const btnConfirmarBaja =
     document.getElementById("btnConfirmarBaja");
-
-
 // ==========================
 // NOTIFICACIONES
 // ==========================
 
-function mostrarNotificacion(mensaje, tipo = "exito") {
-
-    const notificacion =
-        document.getElementById("notificacion");
-
-    const icono =
-        document.getElementById("notificacionIcono");
-
-    const texto =
-        document.getElementById("notificacionTexto");
-
-    notificacion.className =
-        `notificacion ${tipo}`;
-
-    if (tipo === "exito") {
-        icono.textContent = "✓";
-    } else {
-        icono.textContent = "✕";
-    }
-
-    texto.textContent = mensaje;
-
-    notificacion.style.display = "flex";
-
-    setTimeout(() => {
-        notificacion.style.display = "none";
-    }, 3000);
-}
+const mostrarNotificacion = notificacion;
 
 
 // ==========================
@@ -99,7 +74,7 @@ btnAgregar.addEventListener("click", () => {
 
     formCrear.reset();
 
-    modalCrear.style.display = "flex";
+    abrir(modalCrear);
 });
 
 
@@ -109,7 +84,7 @@ btnAgregar.addEventListener("click", () => {
 
 cerrarCrear.addEventListener("click", () => {
 
-    modalCrear.style.display = "none";
+    cerrar(modalCrear);
 });
 
 
@@ -119,7 +94,7 @@ cerrarCrear.addEventListener("click", () => {
 
 cerrarEditar.addEventListener("click", () => {
 
-    modalEditar.style.display = "none";
+    cerrar(modalEditar);
 });
 
 
@@ -130,18 +105,20 @@ cerrarEditar.addEventListener("click", () => {
 window.addEventListener("click", (event) => {
 
     if (event.target === modalCrear) {
-        modalCrear.style.display = "none";
+
+        cerrar(modalCrear);
     }
 
     if (event.target === modalEditar) {
-        modalEditar.style.display = "none";
+
+        cerrar(modalEditar);
     }
 
     if (event.target === modalConfirmacion) {
-        modalConfirmacion.style.display = "none";
+
+        cerrar(modalConfirmacion);
     }
 });
-
 
 // ==========================
 // VALIDAR DATOS
@@ -299,7 +276,7 @@ formCrear.addEventListener("submit", async (event) => {
         );
 
 
-        modalCrear.style.display = "none";
+        cerrar(modalCrear);
 
         formCrear.reset();
 
@@ -479,7 +456,7 @@ window.abrirEditar = function(id) {
     ).value = "";
 
 
-    modalEditar.style.display = "flex";
+    abrir(modalEditar);
 };
 
 
@@ -545,7 +522,7 @@ formEditar.addEventListener("submit", async (event) => {
         );
 
 
-        modalEditar.style.display = "none";
+        cerrar(modalEditar);
 
 
         await cargarEntrenadores();
@@ -572,7 +549,7 @@ window.darDeBaja = function(id) {
 
     entrenadorParaEliminar = id;
 
-    modalConfirmacion.style.display = "flex";
+    abrir(modalConfirmacion);
 };
 
 
@@ -586,7 +563,7 @@ btnCancelarConfirmacion.addEventListener(
 
         entrenadorParaEliminar = null;
 
-        modalConfirmacion.style.display = "none";
+        cerrar(modalConfirmacion);
     }
 );
 
@@ -611,8 +588,7 @@ btnConfirmarBaja.addEventListener(
             );
 
 
-            modalConfirmacion.style.display =
-                "none";
+            cerrar(modalConfirmacion);
 
 
             mostrarNotificacion(
@@ -632,8 +608,7 @@ btnConfirmarBaja.addEventListener(
             console.error(error);
 
 
-            modalConfirmacion.style.display =
-                "none";
+            cerrar(modalConfirmacion);
 
 
             mostrarNotificacion(
