@@ -1,10 +1,7 @@
-const { Sequelize } = require('sequelize');
+const{Sequelize}=require('sequelize')
 
-//Conexión a SQLite 
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: './powergym.sqlite', // Aquí se guardarán todos los datos
-  logging: false
-});
 
-module.exports = sequelize;
+// Sincronizar Base de Datos y arrancar el servidor
+const sequelize=new Sequelize({dialect:'sqlite',storage:process.env.NODE_ENV==='test'?':memory:':'./powergym.sqlite',logging:false})
+
+module.exports=sequelize
