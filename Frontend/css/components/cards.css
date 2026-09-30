@@ -1,0 +1,98 @@
+/* ==========================================================
+   COMPONENTS / CARDS
+   .card es la tarjeta base de superficie.
+   .info-card / .stat-card son las variantes de resumen que
+   usan los paneles del administrador.
+   ========================================================== */
+
+.card {
+  padding: 24px;
+  border-radius: var(--radius-2xl);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- Tarjetas de resumen ---------- */
+
+.info-card,
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 140px;
+  padding: 24px;
+  border-left: 5px solid var(--accent);
+  border-radius: var(--radius-2xl);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-base), box-shadow var(--t-base);
+}
+
+.info-card:hover,
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.info-card.ok,
+.stat-card.success {
+  border-left-color: var(--pg-green);
+}
+
+.info-card.ok .stat-icon,
+.stat-card.success .stat-icon {
+  background: rgba(22, 163, 74, 0.12);
+  color: var(--pg-green);
+}
+
+.stat-icon {
+  display: inline-grid;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border-radius: var(--radius-xl);
+  background: var(--pg-orange-12);
+  color: var(--accent);
+}
+
+.stat-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.stat-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.stat-body span {
+  margin-bottom: 5px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.stat-body strong {
+  font-size: var(--fs-stat);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.stat-body small {
+  margin-top: 5px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+@media (max-width: 800px) {
+  .info-card,
+  .stat-card {
+    min-height: 120px;
+    padding: 18px;
+  }
+
+  .stat-body strong {
+    font-size: 1.9rem;
+  }
+}

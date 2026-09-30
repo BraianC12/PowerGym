@@ -1,0 +1,27 @@
+/* ==========================================================
+   LAYOUTS / FOOTER
+   ========================================================== */
+
+.site-footer {
+  background: var(--surface-deep);
+  color: rgba(255, 255, 255, 0.72);
+  padding: var(--footer-pad);
+  text-align: center;
+  font-size: 13px;
+  border-top: 1px solid var(--line);
+}
+
+.site-footer__logo {
+  margin-bottom: 8px;
+  color: var(--text-invert);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.site-footer__logo span {
+  color: var(--accent);
+}
+
+.site-footer a:hover {
+  color: var(--text-invert);
+}

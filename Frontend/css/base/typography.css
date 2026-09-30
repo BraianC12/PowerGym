@@ -1,0 +1,57 @@
+/* ==========================================================
+   BASE / TYPOGRAPHY
+   Tipografia global: cuerpo de texto, enlaces y foco.
+   Los titulos de cada vista se ajustan en pages/.
+   ========================================================== */
+
+body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  transition: background-color var(--t-base), color var(--t-base);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+p {
+  color: var(--text-muted);
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+strong,
+b {
+  font-weight: 700;
+}
+
+::placeholder {
+  color: var(--field-placeholder);
+  opacity: 1;
+}
+
+::selection {
+  background: var(--pg-orange);
+  color: var(--pg-white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

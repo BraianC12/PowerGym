@@ -1,0 +1,100 @@
+/* ==========================================================
+   PAGE / VENCIMIENTOS (suscripciones)
+   ========================================================== */
+
+.vencimientos {
+  min-height: var(--page-min-h);
+  padding: 70px 0;
+}
+
+.vencimientos-header h1 {
+  margin-bottom: 8px;
+  font-size: 2.6rem;
+}
+
+.vencimientos-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.vencimientos-info .info-card {
+  display: block;
+  min-height: auto;
+}
+
+.vencimientos-table {
+  padding: 25px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* ---------- Filtros ---------- */
+
+.filtros {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr auto;
+  gap: 15px;
+  align-items: end;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--bg);
+  margin-bottom: 25px;
+}
+
+.filtros label {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.filtros input,
+.filtros select {
+  height: var(--control-height-lg);
+  padding: 0 12px;
+}
+
+.filtros .btn {
+  height: var(--control-height-lg);
+  padding: 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@media (max-width: 1000px) {
+  .filtros {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filtros .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 800px) {
+  .vencimientos-info {
+    grid-template-columns: 1fr;
+  }
+
+  .vencimientos-table {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 900px;
+  }
+}
+
+@media (max-width: 600px) {
+  .filtros {
+    grid-template-columns: 1fr;
+  }
+
+  .filtros input,
+  .filtros select {
+    width: 100%;
+  }
+}

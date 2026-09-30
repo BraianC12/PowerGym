@@ -1,0 +1,48 @@
+/* ==========================================================
+   COMPONENTS / BADGES
+   .status / .estado / .badge / .tag comparten la misma base.
+   Estados que genera el JS: activo, inactivo, active,
+   inactive, sent, pending, failed, vigente, proximo, hoy,
+   vencido.
+   ========================================================== */
+
+.status,
+.estado,
+.badge,
+.tag {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge.activo,
+.status.active,
+.status.sent,
+.estado.vigente,
+.tag.on {
+  background: var(--badge-ok-bg);
+  color: var(--badge-ok-text);
+}
+
+.badge.inactivo,
+.status.inactive,
+.status.failed,
+.estado.vencido,
+.tag.off {
+  background: var(--badge-muted-bg);
+  color: var(--badge-muted-text);
+}
+
+.status.pending,
+.estado.proximo {
+  background: var(--badge-warn-bg);
+  color: var(--badge-warn-text);
+}
+
+.estado.hoy {
+  background: var(--badge-info-bg);
+  color: var(--badge-info-text);
+}

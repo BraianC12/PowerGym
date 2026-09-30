@@ -1,0 +1,71 @@
+/* ==========================================================
+   BASE / THEME DARK
+   Sobrescribe los tokens semanticos para las pantallas
+   oscuras (login y panel del entrenador).
+   Se activa con <html data-theme="dark">.
+   ========================================================== */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #141010;
+  --surface: var(--pg-charcoal);
+  --surface-alt: #1a1a1a;
+  --surface-row-hover: #2a2a2a;
+  --surface-deep: #1a1a1a;
+
+  --text: var(--pg-white);
+  --text-strong: var(--pg-white);
+  --text-muted: rgba(255, 255, 255, 0.72);
+  --text-muted-soft: rgba(255, 255, 255, 0.4);
+
+  --line: #3d3d3d;
+  --line-soft: #333333;
+  --line-dark: #3d3d3d;
+
+  --field-bg: #1b1b1b;
+  --field-text: var(--pg-white);
+  --field-placeholder: rgba(255, 255, 255, 0.4);
+
+  --overlay: rgba(0, 0, 0, 0.72);
+  --shadow-tint: rgba(0, 0, 0, 0.25);
+
+  --accent: var(--pg-orange);
+  --accent-deep: var(--pg-orange-strong);
+  --fill-brand: var(--pg-orange-strong);
+  --fill-brand-hover: var(--pg-orange);
+
+  --badge-ok-bg: rgba(33, 136, 56, 0.16);
+  --badge-ok-text: #6ee79b;
+  --badge-warn-bg: var(--pg-orange-16);
+  --badge-warn-text: var(--pg-orange);
+  --badge-info-bg: rgba(255, 176, 32, 0.16);
+  --badge-info-text: #ffb020;
+  --badge-muted-bg: rgba(255, 255, 255, 0.08);
+  --badge-muted-text: var(--text-muted);
+
+  --control-line: var(--line);
+  --focus-ring: var(--pg-orange-16);
+
+  --table-line: var(--line);
+  --table-min-width: 740px;
+  --table-cell-pad: var(--table-cell-pad-wide);
+}
+
+/* La tabla del panel oscuro va sobre un fondo translucido */
+
+[data-theme="dark"] table,
+[data-theme="dark"] thead,
+[data-theme="dark"] tbody,
+[data-theme="dark"] th,
+[data-theme="dark"] td {
+  background: transparent;
+}
+
+[data-theme="dark"] tbody tr {
+  background: transparent;
+}
+
+[data-theme="dark"] tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+}

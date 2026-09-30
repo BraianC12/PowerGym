@@ -1,0 +1,118 @@
+/* ==========================================================
+   COMPONENTS / BUTTONS
+   Base .btn + modificadores.
+   .btn-primary / .action-btn / .ghost-btn / .danger / .sm se
+   maintained porque el HTML y el JS del panel los usan.
+   ========================================================== */
+
+.btn,
+.btn-primary,
+.action-btn {
+  display: inline-block;
+  width: 100px;
+  border: 0;
+  border-radius: var(--btn-radius);
+  padding: var(--btn-pad);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  text-align: center;
+  background: var(--fill-brand);
+  color: var(--text-invert);
+  transition: background var(--t-fast), transform var(--t-fast),
+    opacity var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+}
+
+.btn:hover,
+.btn-primary:hover,
+.action-btn:hover {
+  background: var(--fill-brand-hover);
+  transform: translateY(-1px);
+}
+
+.btn:disabled,
+.btn-primary:disabled,
+.action-btn:disabled,
+.action-btn.is-disabled,
+.action-btn.disabled {
+  background: var(--pg-gray-soft);
+  color: var(--pg-gray-off);
+  cursor: not-allowed;
+  opacity: 0.85;
+  transform: none;
+}
+
+/* ---------- Variantes ---------- */
+
+.btn-secondary {
+  border: 1px solid var(--control-line);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  background: var(--surface);
+  color: var(--accent);
+  transform: none;
+}
+
+.btn-outline {
+  border: 1px solid var(--control-line);
+  background: transparent;
+  color: var(--text-invert);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: none;
+}
+
+/* ---------- Botones de accion en tablas ---------- */
+
+.action-btn {
+  padding: 7px 11px;
+  background: var(--fill-brand);
+  font-size: 12px;
+}
+
+.action-btn.delete {
+  background: var(--surface-deep);
+}
+
+.action-btn.delete:hover {
+  background: var(--pg-ink);
+}
+
+/* ---------- Alias que genera el JS del panel del entrenador ---------- */
+
+.btn.ghost-btn {
+  border: 1px solid var(--control-line);
+  background: transparent;
+  color: var(--text-invert);
+}
+
+.btn.ghost-btn:hover {
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--text-invert);
+}
+
+.btn.danger {
+  border: 1px solid var(--accent-deep);
+  background: transparent;
+  color: var(--accent);
+}
+
+.btn.danger:hover {
+  background: var(--accent-deep);
+  color: var(--text-invert);
+}
+
+.btn.sm {
+  padding: 7px 12px;
+  font-size: var(--fs-sm);
+}

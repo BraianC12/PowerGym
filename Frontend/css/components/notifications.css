@@ -1,0 +1,102 @@
+/* ==========================================================
+   COMPONENTS / NOTIFICATIONS
+   .toast (panel del entrenador), .notificacion
+   (entrenadores) y estados vacios.
+   ========================================================== */
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  z-index: var(--z-notice);
+  padding: 12px 20px;
+  border-radius: var(--radius-lg);
+  background: var(--accent-deep);
+  color: var(--pg-white);
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 20px);
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.notificacion {
+  position: fixed;
+  top: 25px;
+  right: 25px;
+  z-index: var(--z-notice);
+  display: none;
+  align-items: center;
+  gap: 12px;
+  min-width: 300px;
+  max-width: 400px;
+  padding: 16px 20px;
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+}
+
+.notificacion.show {
+  display: flex;
+}
+
+.notificacion.exito {
+  border-left: 5px solid var(--pg-green);
+}
+
+.notificacion.error {
+  border-left: 5px solid var(--pg-red-soft);
+}
+
+#notificacionIcono {
+  font-size: 20px;
+}
+
+/* ---------- Estados vacios ---------- */
+
+.no-results,
+.empty-state {
+  display: none;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.no-results.show,
+.empty-state.show {
+  display: block;
+}
+
+.empty {
+  padding: 44px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.empty-state h3 {
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.empty-state p {
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.empty-icon {
+  margin-bottom: 12px;
+  color: #c9c9c9;
+}
+
+.empty-icon svg {
+  width: 40px;
+  height: 40px;
+}
