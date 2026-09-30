@@ -122,46 +122,38 @@
           </div>
 
           <div
-            class="chips"
-            id="filtros"
-            role="group"
-            aria-label="Filtrar por estado"
-          >
-            <button
-              type="button"
-              class="chip"
-              data-filtro="todos"
-              aria-pressed="true"
-            >
-              Todos
-            </button>
+  class="chips"
+  id="filtros"
+  role="group"
+  aria-label="Filtrar por estado"
+>
+  <button
+    type="button"
+    class="chip"
+    data-filtro="todos"
+    aria-pressed="true"
+  >
+    Todos
+  </button>
 
-            <button
-              type="button"
-              class="chip"
-              data-filtro="activo"
-              aria-pressed="false"
-            >
-              Activos
-            </button>
+  <button
+    type="button"
+    class="chip"
+    data-filtro="activo"
+    aria-pressed="false"
+  >
+    Activos
+  </button>
 
-            <button
-              type="button"
-              class="chip"
-              data-filtro="porvencer"
-              aria-pressed="false"
-            >
-              Por vencer
-            </button>
-
-            <button
-              type="button"
-              class="chip"
-              data-filtro="vencido"
-              aria-pressed="false"
-            >
-              Vencidos
-            </button>
+  <button
+    type="button"
+    class="chip"
+    data-filtro="inactivo"
+    aria-pressed="false"
+  >
+    Inactivos
+  </button>
+</div>
           </div>
 
           <table id="tablaWrap">
@@ -169,6 +161,7 @@
               <tr>
                 <th>Nombre</th>
                 <th>Contacto</th>
+                <th>Email</th>
                 <th>Estado</th>
                 <th>Acciones</th>
 
@@ -327,6 +320,9 @@
       
     </footer>
 
-    <script src="./conexiones/socios.js"></script>
+<script type="module" src="/Frontend/js/socio.js"></script>
+
+
+
   </body>
 </html>
