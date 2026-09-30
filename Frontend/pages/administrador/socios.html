@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Power Gym – Socios</title>
+    <link rel="stylesheet" href="/Frontend/css/main.css" />
+<link rel="stylesheet" href="/Frontend/css/pages/admin-socios.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="wrap site-header__inner">
+        <div class="logo">POWER<span> GYM</span></div>
+
+        <nav class="nav">
+          <button
+            id="navToggle"
+            class="nav__toggle"
+            type="button"
+            aria-expanded="false"
+            aria-label="Abrir menú"
+          >
+            &#9776;
+          </button>
+
+          <ul class="menu" id="menu">
+            <li><a href="./dashboard.html">Inicio</a></li>
+            <li><a href="./dashboard.html">Resumen</a></li>
+            <li>
+              <a href="./socios.html" aria-current="page">Socios</a>
+            </li>
+            <li><a href="./entrenadores.html">Entrenadores</a></li>
+            <li><a href="./suscripciones.html">Suscripciones</a></li>
+            <li><a href="./avisosAutomaticos.html">Avisos Automáticos</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section class="socios">
+      <div class="wrap">
+        <div class="socios-header">
+          <div>
+            <div class="eyebrow">✦ ADMINISTRACIÓN</div>
+            <h1>Socios</h1>
+            <p>Gestioná los socios registrados en Power Gym.</p>
+          </div>
+
+          <button id="btnAgregarSocio" class="btn-primary">
+            + Agregar socio
+          </button>
+        </div>
+        <div class="socios-info">
+
+          <div class="info-card">
+            <span class="stat-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+                <circle cx="10" cy="7" r="4" />
+                <path d="M21 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </span>
+
+            <div class="stat-body">
+              <span>Total de socios</span>
+              <strong id="totalSocios"> 0</strong>
+              <small>Registrados en el gimnasio</small>
+            </div>
+          </div>
+
+
+          <div class="info-card ok">
+            <span class="stat-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="m8 12 3 3 5-6" />
+              </svg>
+            </span>
+
+            <div class="stat-body">
+              <span>Socios activos</span>
+              <strong id="sociosActivos">0</strong>
+              <small>Con cuota al día</small>
+            </div>
+          </div>
+
+        </div> 
+
+
+        <div class="socios-table">
+
+          <div class="table-header">
+            <h2>Lista de socios</h2>
+
+            <div class="search-wrap">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+
+              <input
+                type="text"
+                id="buscarSocio"
+                placeholder="Buscar socio..."
+                class="search"
+                aria-label="Buscar socio"
+              />
+            </div>
+          </div>
+
+          <div
+  class="chips"
+  id="filtros"
+  role="group"
+  aria-label="Filtrar por estado"
+>
+  <button
+    type="button"
+    class="chip"
+    data-filtro="todos"
+    aria-pressed="true"
+  >
+    Todos
+  </button>
+
+  <button
+    type="button"
+    class="chip"
+    data-filtro="activo"
+    aria-pressed="false"
+  >
+    Activos
+  </button>
+
+  <button
+    type="button"
+    class="chip"
+    data-filtro="inactivo"
+    aria-pressed="false"
+  >
+    Inactivos
+  </button>
+</div>
+          </div>
+
+          <table id="tablaWrap">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Contacto</th>
+                <th>Email</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+
+              </tr>
+            </thead>
+
+            <tbody id="tablaSocios"></tbody>
+          </table>
+
+          <div id="sinResultados" class="no-results">
+            Ningún socio coincide con la búsqueda o el filtro.
+          </div>
+
+          <div id="estadoVacio" class="empty-state">
+            <div class="empty-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M6.5 6.5v11" />
+                <path d="M17.5 6.5v11" />
+                <path d="M3.5 9v6" />
+                <path d="M20.5 9v6" />
+                <path d="M6.5 12h11" />
+              </svg>
+            </div>
+
+            <h3>Todavía no hay socios</h3>
+
+            <p>
+              Agregá el primero para empezar a controlar cuotas y vencimientos.
+            </p>
+
+            <button type="button" id="btnVacioAgregar" class="btn-primary">
+              + Agregar primer socio
+            </button>
+          </div>
+
+        </div>
+    </section>
+    
+
+    <!-- Modal: agregar socio -->
+    <div id="modalSocio" class="modal">
+      <form id="formSocio" class="modal-card">
+        <h2>Agregar socio</h2>
+    
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" required />
+        </div>
+    
+        <div class="form-group">
+          <label for="apellido">Apellido</label>
+          <input type="text" id="apellido" name="apellido" required />
+        </div>
+    
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" name="telefono" />
+        </div>
+    
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+    
+        <div id="form-msg-socio" class="form__msg"></div>
+    
+        <div class="modal-actions">
+          <button type="button" id="btnCerrarModal" class="btn-primary btn-secondary">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+    <!-- Modal: editar socio -->
+<div id="modalEditarSocio" class="modal">
+
+  <form id="formEditarSocio" class="modal-card">
+
+    <h2>Editar socio</h2>
+
+    <div class="form-group">
+      <label for="editarNombre">Nombre</label>
+      <input
+        type="text"
+        id="editarNombre"
+        name="nombre"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="editarApellido">Apellido</label>
+      <input
+        type="text"
+        id="editarApellido"
+        name="apellido"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="editarTelefono">Teléfono</label>
+      <input
+        type="text"
+        id="editarTelefono"
+        name="telefono"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="editarEmail">Email</label>
+      <input
+        type="email"
+        id="editarEmail"
+        name="email"
+        required
+      />
+    </div>
+
+    <div id="form-msg-editar" class="form__msg"></div>
+
+    <div class="modal-actions">
+
+      <button
+        type="button"
+        id="btnCerrarEditar"
+        class="btn-primary btn-secondary"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        class="btn-primary"
+      >
+        Guardar cambios
+      </button>
+
+    </div>
+
+  </form>
+</div>
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="site-footer__logo">POWER<span> GYM</span></div>
+        <p>© 2026 <span>Power Gym</span>. Panel de administración.</p>
+      </div>
+    </footer>
+
+<script src="/Frontend/js/components/nav.js"></script>
+<script type="module" src="/Frontend/js/views/socios.js"></script>
+
+
+
+  </body>
+</html>
