@@ -30,3 +30,4 @@ sequelize.sync()
   .catch((error) => {
     console.error('Error al sincronizar la BD:', error);
   });
+  

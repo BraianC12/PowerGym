@@ -9,6 +9,10 @@
   --line: #dddddd;
 }
 
+/* =========================
+   GENERAL
+========================= */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -26,13 +30,20 @@ a {
   color: inherit;
 }
 
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
 .wrap {
   max-width: 1180px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
-/* NAV */
+/* =========================
+   NAV
+========================= */
 
 header {
   background: var(--dark);
@@ -71,7 +82,9 @@ header {
   color: #fff;
 }
 
-/* ENTRENADORES */
+/* =========================
+   ENTRENADORES
+========================= */
 
 .entrenadores {
   padding: 70px 0;
@@ -102,20 +115,28 @@ header {
   color: var(--muted);
 }
 
+/* =========================
+   BOTÓN PRINCIPAL
+========================= */
+
 .btn-primary {
   background: var(--accent);
   color: #fff;
   padding: 13px 22px;
+  border: none;
   border-radius: 6px;
   font-weight: 700;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
   background: var(--accent-dark);
 }
 
-/* RESUMEN */
+/* =========================
+   RESUMEN
+========================= */
 
 .entrenadores-info {
   display: grid;
@@ -142,7 +163,9 @@ header {
   font-size: 32px;
 }
 
-/* TABLA */
+/* =========================
+   TABLA
+========================= */
 
 .entrenadores-table {
   background: #fff;
@@ -193,7 +216,9 @@ td {
   font-size: 14px;
 }
 
-/* ESTADOS */
+/* =========================
+   ESTADOS
+========================= */
 
 .status {
   padding: 5px 10px;
@@ -212,7 +237,9 @@ td {
   color: #666;
 }
 
-/* ACCIONES */
+/* =========================
+   ACCIONES
+========================= */
 
 .action-btn {
   border: none;
@@ -222,6 +249,7 @@ td {
   border-radius: 5px;
   cursor: pointer;
   font-size: 12px;
+  margin-right: 5px;
 }
 
 .action-btn.delete {
@@ -232,7 +260,237 @@ td {
   opacity: .85;
 }
 
-/* FOOTER */
+/* =========================
+   MODALES
+========================= */
+
+/*
+   IMPORTANTE:
+   Los modales empiezan ocultos.
+   JavaScript los muestra con:
+   modal.style.display = "flex";
+*/
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+}
+
+/* Contenedor blanco del formulario */
+
+.modal-contenido {
+  position: relative;
+  background: #fff;
+  width: 100%;
+  max-width: 450px;
+  padding: 30px;
+  border-radius: 10px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+  animation: aparecerModal 0.2s ease;
+}
+
+/* Título */
+
+.modal-contenido h2 {
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+
+/* Botón X */
+
+.cerrar {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+
+  border: none;
+  background: transparent;
+
+  font-size: 28px;
+  line-height: 1;
+
+  color: #666;
+  cursor: pointer;
+}
+
+.cerrar:hover {
+  color: var(--dark);
+}
+
+/* =========================
+   FORMULARIOS DEL MODAL
+========================= */
+
+.modal-contenido form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-contenido input {
+  width: 100%;
+  padding: 12px 14px;
+
+  border: 1px solid var(--line);
+  border-radius: 6px;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  outline: none;
+}
+
+.modal-contenido input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(255, 90, 54, 0.1);
+}
+
+.modal-contenido input::placeholder {
+  color: #999;
+}
+
+.modal-contenido .btn-primary {
+  margin-top: 8px;
+  width: 100%;
+}
+
+/* =========================
+   ANIMACIÓN DEL MODAL
+========================= */
+
+@keyframes aparecerModal {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   NOTIFICACIONES
+========================= */
+
+.notificacion {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+
+    min-width: 300px;
+    max-width: 400px;
+
+    padding: 16px 20px;
+
+    background: #fff;
+    border-radius: 10px;
+
+    display: none;
+    align-items: center;
+    gap: 12px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+
+    z-index: 2000;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.notificacion.exito {
+    border-left: 5px solid #218838;
+}
+
+.notificacion.error {
+    border-left: 5px solid #dc3545;
+}
+
+#notificacionIcono {
+    font-size: 20px;
+}
+
+#notificacionTexto {
+    color: var(--dark);
+}
+
+
+/* =========================
+   CONFIRMACIÓN
+========================= */
+
+.modal-confirmacion {
+    max-width: 420px;
+}
+
+.modal-confirmacion h2 {
+    margin-bottom: 12px;
+}
+
+.modal-confirmacion p {
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.confirmacion-botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-cancelar,
+.btn-eliminar {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-cancelar {
+    background: #eeeeee;
+    color: var(--dark);
+}
+
+.btn-cancelar:hover {
+    background: #dddddd;
+}
+
+.btn-eliminar {
+    background: #dc3545;
+    color: #fff;
+}
+
+.btn-eliminar:hover {
+    background: #b02a37;
+}
+.action-btn.disabled {
+    background: #d6d6d6;
+    color: #888;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.action-btn.disabled:hover {
+    opacity: 0.7;
+}
+/* =========================
+   FOOTER
+========================= */
 
 footer {
   background: var(--dark);
@@ -253,7 +511,9 @@ footer {
   color: var(--accent);
 }
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE
+========================= */
 
 @media (max-width: 800px) {
 
@@ -283,6 +543,11 @@ footer {
 
   table {
     min-width: 900px;
+  }
+
+  .modal-contenido {
+    max-width: 95%;
+    padding: 25px;
   }
 }
 
