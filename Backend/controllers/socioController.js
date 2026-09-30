@@ -94,44 +94,55 @@ const obtenerSocioPorId=async(req,res)=>{
 
 const editarSocio = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { nombre, apellido, dni, telefono, email } = req.body;
+    const id = Number(req.params.id);
+
+    if (!Number.isSafeInteger(id)||id<=0) {
+      return res.status(400).json({ error: "El ID debe ser un numero entero positivo." });
+    }
+
+    const body=req.body
+    if (!body||typeof body !== 'object' || Array.isArray(body)){return res.status(400).json({error: 'Tenés que enviar los datos a modificar'})}
+
+    const camposPermitidos=['nombre','apellido','telefono','email']
+    const cambios={}
+    for(const campo of Object.keys(body)){
+      if(!camposPermitidos.includes(campo)){return res.status(400).json({error:`El campo '${campo}' no se puede modificar`})}
     
-    //buscar al socio
-    const socio = await Socio.findByPk(id, {
-      include: [{ model: Persona }]
-    });
+      if(typeof body[campo]!== 'string'){return res.status(400).json({error:`El campo '${campo}' debe ser texto`})}
+    
+      cambios[campo]=body[campo].trim()
 
-    if (!socio) {
-      return res.status(404).json({ error: "Socio no encontrado." });
+      if(campo!== 'telefono'&& cambios[campo]===''){return res.status(400).json({error:`El campo '${campo}' no puede quedar vacio`})}
     }
 
-    //validar si el nuevo email ya existe en otra persona (evita duplicadosa)
-    if (email && email !== socio.Persona.email) {
-      const emailExistente = await Persona.findOne({ where: { email } });
-      if (emailExistente) {
-        return res.status(400).json({ error: "El correo electronico ya está en uso" });
-      }
+    if(Object.keys(cambios).length===0){return res.status(400).json({error: 'Tenés que enviar al menos un campo para modificar'});
     }
+
+    if (cambios.email !== undefined) {const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(!regexEmail.test(cambios.email)){return res.status(400).json({error:'El formato del correo electronico no es valido'})}
+    }
+      
+    const socio= await Socio.findByPk(id,{include:[{model:Persona}]})
+    if(!socio){return res.status(404).json({error:'Socio no encontrado.'})}
+    
+    if(cambios.email !== undefined && cambios.email !== socio.Persona.email){
+      const personaExistente=await Persona.findOne({where:{email:cambios.email}})
+      if(personaExistente){return res.status(400).json({error: 'El correo electronico ya está en uso'})}}
+      
+    
 
     //actualizar la informacion
-    await socio.Persona.update({
-      nombre: nombre || socio.Persona.nombre,
-      apellido: apellido || socio.Persona.apellido,
-      dni: dni || socio.Persona.dni,
-      telefono: telefono || socio.Persona.telefono,
-      email: email || socio.Persona.email
-    });
+    await socio.Persona.update(cambios)
 
-    return res.status(200).json({
-      mensaje: "Datos del socio actualizados correctamente",
-      socio: socio
-    });
+    return res.status(200).json({mensaje: "Datos del socio actualizados correctamente",socio});
+    } catch (error) {
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(400).json({ error: 'El correo electrónico ya está en uso.'});
+    }
+  console.error('Error al actualizar el socio:', error);
 
-  } catch (error) {
-    console.error("Error al actualizar el socio:", error);
-    return res.status(500).json({ error: "Error interno al modificar los datos."});
-  };
-}
+    return res.status(500).json({error: 'Error interno al modificar los datos.'});
+  }
+};
 
 module.exports = { crearSocio, darDeBajaSocio, obtenerSocios, obtenerSocioPorId,editarSocio };

@@ -6,6 +6,6 @@ router.post('/', crearSocio);
 router.get('/', obtenerSocios); 
 router.get('/:id',obtenerSocioPorId);
 router.patch('/:id', darDeBajaSocio); 
-
+router.put('/:id', editarSocio)
 
 module.exports = router;
