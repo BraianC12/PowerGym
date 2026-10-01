@@ -1,0 +1,155 @@
+/* ==========================================================
+   BASE / VARIABLES
+   Tokens de marca (invariables) + tokens semanticos del tema
+   claro, que es el tema por defecto del panel de administracion.
+   El tema oscuro esta en base/theme-dark.css.
+   ========================================================== */
+
+:root {
+  /* ---------- Marca ---------- */
+  --pg-orange: #ff5a36;
+  --pg-orange-strong: #ff3d1f;
+  --pg-orange-deep: #d92f18;
+  --pg-orange-dark: #c5230c;
+  --pg-charcoal: #252525;
+  --pg-ink: #111111;
+  --pg-slate: #333333;
+  --pg-off-white: #f2f2f0;
+  --pg-white: #ffffff;
+
+  /* ---------- Tinte de marca ---------- */
+  --pg-orange-wash: #fff1ec;
+  --pg-orange-08: rgba(255, 90, 54, 0.08);
+  --pg-orange-12: rgba(255, 90, 54, 0.12);
+  --pg-orange-16: rgba(255, 90, 54, 0.16);
+
+  /* ---------- Estados ---------- */
+  --pg-green-wash: #e5f6ea;
+  --pg-green: #218838;
+  --pg-amber-wash: #fff0d6;
+  --pg-amber: #a65b00;
+  --pg-red-wash: #eeeeee;
+  --pg-red-soft: #dc3545;
+  --pg-red-strong: #b02a37;
+  --pg-red-text: #c0392b;
+  --pg-gray-wash: #eeeeee;
+  --pg-gray-text: #666666;
+  --pg-gray-soft: #d6d6d6;
+  --pg-gray-off: #888888;
+
+  /* ---------- Superficies y texto (tema claro) ---------- */
+  --bg: var(--pg-off-white);
+  --surface: var(--pg-white);
+  --surface-alt: #f5f5f5;
+  --surface-row-hover: #fafafa;
+  --surface-deep: var(--pg-charcoal);
+
+  --text: var(--pg-charcoal);
+  --text-strong: var(--pg-ink);
+  --text-muted: #777777;
+  --text-invert: var(--pg-white);
+
+  --line: #dddddd;
+  --line-soft: #eeeeee;
+  --line-dark: var(--pg-charcoal);
+
+  --field-bg: var(--pg-white);
+  --field-text: #1b1b1b;
+  --field-placeholder: #999999;
+
+  --overlay: rgba(0, 0, 0, 0.55);
+  --shadow-tint: rgba(0, 0, 0, 0.05);
+
+  /* ---------- Roles de marca ---------- */
+  --accent: var(--pg-orange);
+  --accent-deep: var(--pg-orange-deep);
+  --fill-brand: var(--pg-orange);
+  --fill-brand-hover: var(--pg-orange-deep);
+
+  /* ---------- Badges ---------- */
+  --badge-ok-bg: var(--pg-green-wash);
+  --badge-ok-text: var(--pg-green);
+  --badge-warn-bg: var(--pg-orange-wash);
+  --badge-warn-text: var(--pg-orange-strong);
+  --badge-info-bg: var(--pg-amber-wash);
+  --badge-info-text: var(--pg-amber);
+  --badge-muted-bg: var(--pg-gray-wash);
+  --badge-muted-text: var(--pg-gray-text);
+
+  /* ---------- Tipografia ---------- */
+  --font-sans: "Segoe UI", Arial, system-ui, sans-serif;
+  --font-brand: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  --fs-2xs: 0.68rem;
+  --fs-xs: 0.72rem;
+  --fs-sm: 0.8rem;
+  --fs-md: 0.85rem;
+  --fs-base: 0.95rem;
+  --fs-lg: 1.15rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 1.8rem;
+  --fs-3xl: 2.3rem;
+  --fs-4xl: 2.6rem;
+  --fs-stat: 2.6rem;
+  --fs-stat-sm: 1.5rem;
+
+  /* ---------- Radios ---------- */
+  --radius-xs: 4px;
+  --radius-sm: 5px;
+  --radius: 6px;
+  --radius-md: 7px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-2xl: 12px;
+  --radius-3xl: 15px;
+  --radius-pill: 20px;
+  --radius-round: 50%;
+  --radius-full: 999px;
+
+  /* ---------- Sombras ---------- */
+  --shadow-xs: 0 4px 15px rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 4px 16px var(--shadow-tint);
+  --shadow-md: 0 4px 18px var(--shadow-tint);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.25);
+  --shadow-xl: 0 15px 40px rgba(0, 0, 0, 0.2);
+
+  /* ---------- Layout ---------- */
+  --container-max: 1180px;
+  --container-pad: 24px;
+  --header-pad-y: 26px;
+  --header-pad-y-sm: 18px;
+  --footer-pad: 26px;
+  --section-pad: 70px;
+  --section-pad-sm: 35px;
+  --page-min-h: calc(100vh - 150px);
+  --menu-gap: 28px;
+
+  /* ---------- Controles ---------- */
+  --control-pad: 10px 12px;
+  --control-pad-lg: 11px 12px;
+  --control-radius: var(--radius);
+  --control-height: 40px;
+  --control-height-lg: 42px;
+  --control-line: var(--line);
+  --focus-ring: rgba(255, 61, 31, 0.1);
+  --btn-pad: 13px 22px;
+  --btn-radius: var(--radius);
+
+  /* ---------- Capas ---------- */
+  --z-header: 10;
+  --z-modal: 100;
+  --z-overlay: 1000;
+  --z-notice: 2000;
+
+  /* ---------- Movimiento ---------- */
+  --t-fast: 0.15s ease;
+  --t-base: 0.2s ease;
+
+  /* ---------- Tablas ---------- */
+  --table-line: var(--line-soft);
+  --table-cell-pad: 15px 12px;
+  --table-cell-pad-wide: 14px 16px;
+  --table-head-size: 13px;
+  --table-body-size: 14px;
+  --table-min-width: 0;
+}

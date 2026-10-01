@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Power Gym – Vencimientos</title>
+    <link rel="stylesheet" href="/Frontend/css/main.css" />
+<link rel="stylesheet" href="/Frontend/css/pages/admin-suscripciones.css" />
+  </head>
+
+  <body>
+<header class="site-header">
+  <div class="wrap site-header__inner">
+        <div class="logo">POWER<span> GYM</span></div>
+<nav class="nav">
+      <button
+        id="navToggle"
+        class="nav__toggle"
+        type="button"
+        aria-expanded="false"
+        aria-label="Abrir menú"
+      >
+        &#9776;
+      </button>
+
+      <ul class="menu" id="menu">
+        <li><a href="./dashboard.html">Inicio</a></li>
+        <li><a href="./dashboard.html">Resumen</a></li>
+        <li><a href="./socios.html">Socios</a></li>
+        <li><a href="./entrenadores.html">Entrenadores</a></li>
+        <li><a href="./suscripciones.html" aria-current="page">Suscripciones</a></li>
+        <li><a href="./avisosAutomaticos.html">Avisos Automáticos</a></li>
+      </ul>
+    </nav>
+      </div>
+    </header>
+
+    <section class="vencimientos">
+      <div class="wrap">
+        <div class="vencimientos-header">
+          <div>
+            <div class="eyebrow">✦ ADMINISTRACIÓN</div>
+            <h1>Suscripciones</h1>
+            <p>Consultá los socios próximos a vencer y sus membresías.</p>
+          </div>
+          <button type="button" id="btnNuevaSuscripcion" class="btn-primary">+ Nueva suscripción</button>
+        </div>
+
+        <div class="vencimientos-info">
+          <div class="info-card"><span>Vencen hoy    </span><strong id="statHoy"> 0</strong></div>
+          <div class="info-card"><span>Próximos a vencer      </span><strong id="statProximos">  0</strong></div>
+          <div class="info-card"><span>Socios vencidos     </span><strong id="statVencidos">  0</strong></div>
+        </div>
+
+        <div class="vencimientos-table">
+          <div class="table-header">
+            <div>
+              <h2>Socios y vencimientos</h2>
+              <p>Filtrá los socios según su estado de vencimiento.</p>
+            </div>
+          </div>
+
+          <div class="filtros">
+            <div class="filtro-busqueda">
+              <label for="buscarSocio">Buscar socio</label>
+              <input type="text" id="buscarSocio" placeholder="Nombre o teléfono..." />
+            </div>
+            <div class="filtro">
+              <label for="filtroEstado">Estado</label>
+              <select id="filtroEstado">
+                <option value="todos">Todos</option>
+                <option value="vigente">Vigente</option>
+                <option value="proximo">Próximo a vencer</option>
+                <option value="hoy">Vence hoy</option>
+                <option value="vencido">Vencido</option>
+                <option value="cancelada">Cancelada</option>
+              </select>
+            </div>
+            <div class="filtro">
+              <label for="ordenar">Ordenar por</label>
+              <select id="ordenar">
+                <option value="vencimiento-asc">Vencimiento más cercano</option>
+                <option value="vencimiento-desc">Vencimiento más lejano</option>
+                <option value="nombre">Nombre</option>
+              </select>
+            </div>
+            <button type="button" id="limpiarFiltros" class="btn btn-secondary">
+              Limpiar filtros
+            </button>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th><th>Contacto</th><th>Inicio</th><th>Vencimiento</th><th>Días restantes</th><th>Estado</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaVencimientos">
+              <tr><td colspan="7" class="msg-fila">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal: nueva suscripción -->
+    <div id="modalSuscripcion" class="modal">
+      <form id="formSuscripcion" class="modal-card">
+        <h2>Nueva suscripción</h2>
+
+        <div class="form-group">
+          <label for="socioId">Socio</label>
+          <select id="socioId" name="socioId" required>
+            <option value="">Cargando socios...</option>
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label for="fechaInicio">Fecha de inicio</label>
+          <input type="date" id="fechaInicio" name="fechaInicio" required />
+        </div>
+
+        <div class="form-group">
+          <label for="fechaVencimiento">Fecha de vencimiento</label>
+          <input type="date" id="fechaVencimiento" name="fechaVencimiento" required />
+        </div>
+
+        <div id="form-msg-suscripcion" class="form__msg"></div>
+
+        <div class="modal-actions">
+          <button type="button" id="btnCerrarModal" class="btn-primary btn-secondary">Cancelar</button>
+          <button type="submit" class="btn-primary">Crear suscripción</button>
+        </div>
+      </form>
+    </div>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="site-footer__logo">POWER<span> GYM</span></div>
+        <p>© 2026 <span>Power Gym</span>. Panel de administración.</p>
+      </div>
+    </footer>
+
+    <script src="/Frontend/js/components/nav.js"></script>
+<script type="module" src="/Frontend/js/views/suscripciones.js"></script>
+  </body>
+</html>

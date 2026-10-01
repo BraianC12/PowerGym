@@ -1,0 +1,69 @@
+/* ==========================================================
+   PAGE / SOCIOS
+   Tabla de socios con buscador, filtros y modales.
+   ========================================================== */
+
+.socios {
+  min-height: var(--page-min-h);
+  padding: 55px 0 70px;
+}
+
+.socios-header h1 {
+  margin-bottom: 8px;
+  font-size: 2.5rem;
+  line-height: 1.1;
+}
+
+.socios-header p {
+  font-size: 15px;
+}
+
+.socios-info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.socios-info .info-card {
+  min-height: 140px;
+}
+
+.socios-table {
+  padding: 25px;
+  border-radius: var(--radius-2xl);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.who {
+  font-weight: 700;
+}
+
+@media (max-width: 800px) {
+  .socios {
+    padding: 35px 0 50px;
+  }
+
+  .socios-header h1 {
+    font-size: 2.1rem;
+  }
+
+  .socios-info {
+    grid-template-columns: 1fr;
+  }
+
+  .socios-table {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 700px;
+  }
+}
+
+@media (max-width: 500px) {
+  .btn-primary {
+    width: 100%;
+  }
+}

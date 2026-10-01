@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel del profesor · Gimnasio</title>
+<link rel="stylesheet" href="/Frontend/css/main.css">
+<link rel="stylesheet" href="/Frontend/css/pages/trainer-dashboard.css">
+</head>
+<body>
+
+  <section class="hero" id="inicio">
+    <div class="ghost" aria-hidden="true">POWER</div>
+    <div class="brand"><b>POWER<span>.</span>GYM</b><small>Sesión: Profesor</small></div>
+
+    <div class="copy">
+      <div class="kicker">Panel del profesor</div>
+      <h1>GESTIONÁ<br>TUS SOCIOS</h1>
+      <p>Alta, edición y baja de socios en un solo lugar. Todo tu gimnasio, bajo control.</p>
+      <div class="cta">
+        <button class="btn" id="nuevo">NUEVO SOCIO +</button>
+        <a class="link" href="#socios">VER SOCIOS</a>
+      </div>
+    </div>
+
+    <div class="photo" id="photo">
+      <!-- Para una foto fija: reemplazá src="" por la ruta de tu imagen (PNG con fondo transparente queda mejor) -->
+      <img id="img" alt="Profesor" src="/Frontend/img/profesor.png">
+      <svg class="sil" viewBox="0 0 300 380" aria-hidden="true">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6402a"/><stop offset="1" stop-color="#7a1408"/></linearGradient></defs>
+        <circle cx="150" cy="95" r="58" fill="url(#g)" opacity=".85"/>
+        <path d="M20 380c0-95 45-150 130-150s130 55 130 150z" fill="url(#g)" opacity=".85"/>
+      </svg>
+    </div>
+    <button class="pick" id="pick" type="button">Cambiar foto</button>
+    <input type="file" id="file" accept="image/*" hidden>
+
+    <div class="cards" aria-label="Resumen">
+      <div class="card a"><b id="sAct">0</b><strong>Socios activos</strong><small>Con la cuota al día y acceso al gimnasio.</small></div>
+      <div class="card b"><b id="sTot">0</b><strong>Registrados</strong><small><span id="sBaja">0</span> dados de baja.</small></div>
+    </div>
+  </section>
+
+  <section class="panel" id="socios">
+    <h2>Socios</h2>
+    <p class="lead">Buscá, editá o dá de baja. Los socios dados de baja se pueden reactivar.</p>
+    <div class="bar">
+<input type="search" id="q" placeholder="Buscar por nombre, apellido o teléfono">      <select id="f" aria-label="Filtrar por estado">
+        <option value="activo">Activos</option>
+        <option value="baja">Dados de baja</option>
+        <option value="todos">Todos</option>
+      </select>
+      <button class="btn ghost-btn" id="nuevo2">Nuevo socio</button>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Socio</th><th>Contacto</th><th>Estado</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" hidden>No hay socios para mostrar. Creá el primero con “Nuevo socio”.</div>
+    </div>
+  </section>
+
+<dialog id="dlg">
+  <form method="dialog" class="dlg" id="form" novalidate>
+    <h3 id="dTitle">Nuevo socio</h3>
+    <div class="grid">
+  <div>
+    <label for="nombre">Nombre</label>
+    <input id="nombre" type="text" autocomplete="off">
+  </div>
+  <div>
+    <label for="apellido">Apellido</label>
+    <input id="apellido" type="text" autocomplete="off">
+  </div>
+  <div>
+    <label for="tel">Teléfono</label>
+    <input id="tel" type="text" inputmode="tel" autocomplete="off">
+  </div>
+  <div>
+    <label for="mail">Email</label>
+    <input id="mail" type="text" inputmode="email" autocomplete="off">
+  </div>
+</div>
+    <p class="err" id="err" role="alert"></p>
+    <div class="foot">
+      <button type="button" class="btn ghost-btn" id="cancel">Cancelar</button>
+      <button type="submit" class="btn">Guardar</button>
+    </div>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+<script type="module" src="/Frontend/js/views/entrenador.js">
+
+</script>
+</body>
+</html>

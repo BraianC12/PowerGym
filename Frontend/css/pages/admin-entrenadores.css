@@ -1,0 +1,95 @@
+/* ==========================================================
+   PAGE / ENTRENADORES
+   ========================================================== */
+
+.entrenadores {
+  min-height: var(--page-min-h);
+  padding: 70px 0;
+}
+
+.entrenadores-header h1 {
+  margin-bottom: 8px;
+  font-size: 2.6rem;
+}
+
+.entrenadores-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.entrenadores-info .info-card {
+  display: block;
+  min-height: auto;
+}
+
+.entrenadores-table {
+  padding: 25px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.modal-contenido form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-contenido .btn-primary {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.modal-contenido .form__msg {
+  min-height: 1.2em;
+  color: var(--danger-msg, var(--pg-red-text));
+  font-size: var(--fs-md);
+}
+
+.btn-cancelar {
+  border: 0;
+  padding: 11px 18px;
+  border-radius: var(--radius);
+  background: var(--surface-alt);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancelar:hover {
+  background: var(--line);
+}
+
+.btn-eliminar {
+  border: 0;
+  padding: 11px 18px;
+  border-radius: var(--radius);
+  background: var(--pg-red-soft);
+  color: var(--pg-white);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-eliminar:hover {
+  background: var(--pg-red-strong);
+}
+
+.modal-confirmacion p {
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+@media (max-width: 800px) {
+  .entrenadores-info {
+    grid-template-columns: 1fr;
+  }
+
+  .entrenadores-table {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 900px;
+  }
+}

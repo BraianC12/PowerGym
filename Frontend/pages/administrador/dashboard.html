@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Power Gym – Panel de Administrador</title>
+<link rel="stylesheet" href="/Frontend/css/main.css" />
+<link rel="stylesheet" href="/Frontend/css/pages/admin-dashboard.css" />
+</head>
+<body>
+
+<header class="site-header site-header--overlay">
+  <div class="wrap site-header__inner">
+    <div class="logo">POWER<span> GYM</span></div>
+
+    <nav class="nav">
+      <button
+        id="navToggle"
+        class="nav__toggle"
+        type="button"
+        aria-expanded="false"
+        aria-label="Abrir menú"
+      >
+        &#9776;
+      </button>
+
+      <ul class="menu" id="menu">
+        <li><a href="./dashboard.html">Inicio</a></li>
+        <li><a href="./dashboard.html">Resumen</a></li>
+        <li><a href="./socios.html">Socios</a></li>
+        <li><a href="./entrenadores.html">Entrenadores</a></li>
+        <li><a href="./suscripciones.html">Suscripciones</a></li>
+        <li><a href="./avisosAutomaticos.html">Avisos Automáticos</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bgtext">POWER GYM</div>
+  <div class="wrap" style="position:relative;width:100%">
+    <div class="eyebrow">✦ PANEL DE ADMINISTRACIÓN</div>
+    <h1>GESTIONÁ<br>POWER GYM</h1>
+    <p>Administrá socios, entrenadores y vencimientos desde un solo lugar.</p>
+    <div class="hero-ctas">
+      <a href="./socios.html" class="btn-primary">Agregar socio ↗</a>
+      <a href="#dashboard" class="btn-outline">Ver resumen</a>
+    </div>
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="num">120</div>
+        <p>Socios registrados actualmente en Power Gym.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="dashboard" id="dashboard">
+  <div class="wrap">
+    <h2>Resumen de Power Gym</h2>
+
+    <div class="dashboard-cards">
+
+      <div class="dashboard-card">
+        <h3>Socios activos</h3>
+        <p>120</p>
+        <span>Socios registrados</span>
+      </div>
+
+      <div class="dashboard-card">
+        <h3>Entrenadores</h3>
+        <p>15</p>
+        <span>Entrenadores disponibles</span>
+      </div>
+     <div class="dashboard-card">
+        <h3>Vencimiento</h3>
+        <p>15</p>
+        <span>vencimiento esta semana</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="calendar-section">
+  <div class="wrap">
+    <div class="calendar-container">
+
+      <div class="calendar-header">
+        <button id="prevMonth" type="button" aria-label="Mes anterior">&lsaquo;</button>
+        <h2 id="calendarTitle"></h2>
+        <button id="nextMonth" type="button" aria-label="Mes siguiente">&rsaquo;</button>
+      </div>
+
+      <div class="calendar-weekdays">
+        <div>Lun</div>
+        <div>Mar</div>
+        <div>Mié</div>
+        <div>Jue</div>
+        <div>Vie</div>
+        <div>Sáb</div>
+        <div>Dom</div>
+      </div>
+
+      <div class="calendar-grid" id="calendar"></div>
+
+    </div>
+  </div>
+</section>
+
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="site-footer__logo">POWER<span> GYM</span></div>
+    <p>© 2026 <span>Power Gym</span>. Panel de administración.</p>
+  </div>
+</footer>
+
+<script src="/Frontend/js/components/nav.js"></script>
+<script type="module" src="/Frontend/js/views/dashboard.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+/* ==========================================================
+   LAYOUTS / HEADER
+   Barra superior: logo + menu de navegacion.
+   Modificador:
+     .site-header--overlay -> header flotante sobre un hero
+   ========================================================== */
+
+.site-header {
+  position: relative;
+  background: var(--surface-deep);
+  padding: var(--header-pad-y) 0;
+}
+
+.site-header--overlay {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: var(--z-header);
+  background: transparent;
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo {
+  color: var(--text-invert);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav__toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text-invert);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.menu {
+  display: flex;
+  gap: var(--menu-gap);
+}
+
+.menu a {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+  transition: color var(--t-fast);
+}
+
+.menu a:hover {
+  color: var(--text-invert);
+}
+
+.menu a[aria-current="page"] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (max-width: 800px) {
+  .nav__toggle {
+    display: block;
+  }
+
+  .menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 8px var(--container-pad) 16px;
+    background: var(--surface-deep);
+    box-shadow: var(--shadow-md);
+  }
+
+  .menu:not(.open) {
+    display: none;
+  }
+
+  .menu a {
+    display: block;
+    padding: 10px 0;
+  }
+}

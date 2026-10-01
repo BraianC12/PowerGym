@@ -1,0 +1,87 @@
+/* ==========================================================
+   PAGE / AVISOS AUTOMATICOS
+   ========================================================== */
+
+.avisos {
+  min-height: var(--page-min-h);
+  padding: 70px 0;
+}
+
+.avisos-header h1 {
+  margin-bottom: 8px;
+  font-size: 2.6rem;
+}
+
+.avisos-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.avisos-info .info-card {
+  display: block;
+  min-height: auto;
+}
+
+.configuracion {
+  padding: 25px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  margin-bottom: 25px;
+}
+
+.configuracion-header {
+  margin-bottom: 20px;
+}
+
+.configuracion-header h2 {
+  margin-bottom: 5px;
+  font-size: var(--fs-xl);
+}
+
+.configuracion-header p {
+  font-size: 14px;
+}
+
+.configuracion-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.avisos-table {
+  padding: 25px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.configuracion .btn-primary {
+  margin-top: 20px;
+  padding: 11px 20px;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .configuracion-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .avisos-info {
+    grid-template-columns: 1fr;
+  }
+
+  .configuracion-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .avisos-table {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 850px;
+  }
+}
