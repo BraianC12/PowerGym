@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { crearSocio, darDeBajaSocio, obtenerSocios, obtenerSocioPorId, editarSocio } = require('../controllers/socioController');
+const { verificarToken } = require('../middlewares/authMiddleware');
 
-router.post('/', crearSocio); 
-router.get('/', obtenerSocios); 
-router.get('/:id',obtenerSocioPorId);
-router.patch('/:id', darDeBajaSocio); 
-router.put('/:id', editarSocio)
+router.post('/', verificarToken, crearSocio); 
+router.get('/', verificarToken, obtenerSocios); 
+router.get('/:id', verificarToken, obtenerSocioPorId);
+router.patch('/:id', verificarToken, darDeBajaSocio); 
+router.put('/:id', verificarToken, editarSocio);
 
 module.exports = router;
