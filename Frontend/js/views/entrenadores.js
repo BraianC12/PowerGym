@@ -10,6 +10,10 @@ import { notificacion } from "../components/notifications.js";
 
 import { abrir, cerrar } from "../components/modal.js";
 
+import { exigirSesion } from "../api/sesion.js";
+
+exigirSesion();
+
 
 // ==========================
 // VARIABLES

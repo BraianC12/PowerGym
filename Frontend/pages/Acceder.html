@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Power Gym – Acceso</title>
+<link rel="stylesheet" href="/Frontend/css/main.css">
+<link rel="stylesheet" href="/Frontend/css/pages/acceder-sistema.css">
+
+<body>
+
+<!-- Barra superior -->
+<header class="topbar">
+ <img src="/Frontend/img/logo_power_gym_transparente.png" class="topbar__logo" alt="Power Gym">
+</header>
+
+<!-- Hero -->
+<main class="hero">
+  <section class="hero__content">
+    <p class="brand">POWER <strong>GYM</strong></p>
+    <h1>Acceso al <span>SISTEMA DEL GIMNASIO</span></h1>
+    <p class="hero__sub">Bienvenido de nuevo. Ingresá con tu email y contraseña para administrar el gimnasio.</p>
+
+    <form id="login-form" class="form" novalidate>
+      <input type="email" name="email" placeholder="Email" autocomplete="username" required>
+      <input type="password" name="contrasena" placeholder="Contraseña" autocomplete="current-password" required>
+      <small>Acceso restringido. Solo personal autorizado.</small>
+      <p class="form__msg" id="form-msg" role="status"></p>
+      <button type="submit">INGRESAR ↗</button>
+    </form>
+  </section>
+
+  <section class="hero__image" aria-hidden="true">
+    <!-- Reemplaza por la foto del gimnasio: <img src="gimnasio.png" alt=""> -->
+    <div class="photo-placeholder">
+      <img src="/Frontend/img/Administrador.png" alt="Administrador">
+    </div>
+  </section>
+</main>
+
+<!-- Ticker inferior -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track" id="ticker"></div>
+</div>
+
+<script type="module" src="/Frontend/js/views/acceder.js"></script>
+
+</body>
+</html>

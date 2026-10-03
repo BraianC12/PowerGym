@@ -9,6 +9,9 @@ import {
 // ---- Componentes ----
 import { $, esc } from "../components/dom.js";
 import { abrir, cerrar, conectarCierre } from "../components/modal.js";
+import { exigirSesion } from "../api/sesion.js";
+
+exigirSesion();
 
 // ---- Variables ----
 
