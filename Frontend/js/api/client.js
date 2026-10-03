@@ -4,6 +4,8 @@
 // request() y nunca escribe fetch a mano.
 // ==========================================================
 
+import { token, limpiar, LOGIN_URL } from "./sesion.js";
+
 export const API_BASE = "http://localhost:3000/api";
 
 export class ApiError extends Error {
@@ -19,10 +21,20 @@ export class ApiError extends Error {
 // body: objeto a enviar como JSON (opcional)
 // error: mensaje a usar si el backend no devuelve uno propio
 export async function request(ruta, { method = "GET", body, error } = {}) {
-  const opciones = { method };
+  const headers = {};
+
+  const tokenActual = token();
+  if (tokenActual) {
+    headers.Authorization = `Bearer ${tokenActual}`;
+  }
 
   if (body !== undefined) {
-    opciones.headers = { "Content-Type": "application/json" };
+    headers["Content-Type"] = "application/json";
+  }
+
+  const opciones = { method, headers };
+
+  if (body !== undefined) {
     opciones.body = JSON.stringify(body);
   }
 
@@ -31,7 +43,18 @@ export async function request(ruta, { method = "GET", body, error } = {}) {
   const datos = await respuesta.json().catch(() => null);
 
   if (!respuesta.ok) {
-    throw new ApiError(datos?.error || error || `Error ${respuesta.status}`, respuesta.status);
+    // 401 fuera del login = sesión vencida o caída. Se lava y se
+    // vuelve al acceso, en un solo lugar y sin que cada vista lo
+    // repita. El propio login no redirige acá, si no se cicla.
+    if (respuesta.status === 401 && ruta !== "/login") {
+      limpiar();
+      window.location.replace(LOGIN_URL);
+    }
+
+    throw new ApiError(
+      datos?.error || datos?.message || error || `Error ${respuesta.status}`,
+      respuesta.status,
+    );
   }
 
   return datos;

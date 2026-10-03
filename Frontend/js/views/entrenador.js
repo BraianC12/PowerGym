@@ -8,6 +8,9 @@
 import { obtenerSocios, crearSocio, editarSocio, darDeBajaSocio } from "../api/sociosApi.js";
 import { $, esc } from "../components/dom.js";
 import { toast } from "../components/notifications.js";
+import { exigirSesion, limpiar, LOGIN_URL } from "../api/sesion.js";
+
+exigirSesion();
 
 const PK = "gym_foto_v1";
 
@@ -18,6 +21,16 @@ const err = $("err");
 
 let socios = [];
 let editId = null;
+
+const cerrarSesion = $("cerrarSesion");
+
+if (cerrarSesion) {
+  cerrarSesion.addEventListener("click", (e) => {
+    e.preventDefault();
+    limpiar();
+    window.location.replace(LOGIN_URL);
+  });
+}
 
 // ======================================================
 // MAPEO API -> VISTA

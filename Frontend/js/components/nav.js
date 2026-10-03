@@ -30,4 +30,19 @@
             if (oculto && abierto()) setEstado(false);
         });
     }
+
+    // Cierre de sesión. nav.js es un script clásico, así que se
+    // carga sesion.js con import() dinámico.
+    const cerrarSesion = document.getElementById("cerrarSesion");
+
+    if (cerrarSesion) {
+        cerrarSesion.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            import("../api/sesion.js").then(({ limpiar, LOGIN_URL }) => {
+                limpiar();
+                window.location.replace(LOGIN_URL);
+            });
+        });
+    }
 })();

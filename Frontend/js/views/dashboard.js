@@ -4,6 +4,9 @@
 // ==========================================================
 
 import { $ } from "../components/dom.js";
+import { exigirSesion } from "../api/sesion.js";
+
+exigirSesion();
 
 const calendar = $("calendar");
 const calendarTitle = $("calendarTitle");

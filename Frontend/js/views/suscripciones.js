@@ -12,6 +12,10 @@ import {
   crearSuscripcion,
 } from "../api/suscripcionesApi.js";
 
+import { exigirSesion } from "../api/sesion.js";
+
+exigirSesion();
+
 const ETIQUETA = {
   vigente: "Vigente",
   proximo: "Próximo",
