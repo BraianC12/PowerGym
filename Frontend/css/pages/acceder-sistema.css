@@ -1,0 +1,278 @@
+/* ==========================================================
+   PAGES / ACCEDER SISTEMA
+   Pantalla de login. No define :root: los colores salen de
+   base/variables.css y, al ser una pantalla oscura, de
+   base/theme-dark.css (esta pagina usa <html data-theme="dark">).
+   Solo queda el layout propio de la pagina.
+   ========================================================== */
+
+body {
+  /* Inter, igual que la marca; el tema oscuro pone --pg-charcoal aca. */
+  font-family: var(--font-brand);
+
+  /* Wash de marca sobre la superficie oscura. */
+  background:
+    radial-gradient(
+      60% 50% at 80% 40%,
+      var(--pg-orange-16),
+      transparent 70%
+    ),
+    var(--surface);
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+
+/* =========================
+   BARRA SUPERIOR
+========================= */
+
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  padding: 0 32px;
+  background: rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar__logo {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  background: transparent;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 48px var(--container-pad);
+}
+
+.brand {
+  margin-bottom: 12px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+}
+
+.brand strong {
+  color: var(--fill-brand);
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;
+}
+
+h1 {
+  max-width: 14em;
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+h1 span {
+  color: var(--fill-brand);
+}
+
+.hero__sub {
+  max-width: 34em;
+  margin: 18px 0 24px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+
+/* =========================
+   FORMULARIO
+   La base de los controles ya viene de components/forms.css
+   (fondo, borde, radio y foco salen de tokens). Aca solo se
+   ajusta el aire propio de un form de acceso.
+========================= */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 420px;
+}
+
+.form input {
+  padding: 15px 16px;
+  font-size: 0.95rem;
+}
+
+.form input::placeholder {
+  color: var(--field-placeholder);
+}
+
+.form input.invalid {
+  border-color: var(--accent-deep);
+}
+
+.form button {
+  width: 100%;
+  padding: 15px;
+  border-radius: var(--radius);
+  background: linear-gradient(
+    180deg,
+    var(--fill-brand),
+    var(--pg-orange-deep)
+  );
+  color: var(--pg-white);
+  font-size: 0.9rem;
+  font-weight: 800;
+  transition: transform var(--t-fast), filter var(--t-fast);
+}
+
+.form button:hover {
+  filter: brightness(0.92);
+  transform: translateY(-1px);
+}
+
+.form button:focus-visible {
+  outline: 2px solid var(--pg-white);
+  outline-offset: 2px;
+}
+
+.form button:disabled {
+  filter: brightness(0.7);
+  cursor: default;
+  transform: none;
+}
+
+.form small {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+/* El .form ya separa con gap, asi que se anula el margen que
+   components/forms.css le da al mensaje. */
+.form__msg {
+  margin-top: 0;
+}
+
+
+/* =========================
+   IMAGEN
+========================= */
+
+.hero__image {
+  display: flex;
+  justify-content: center;
+}
+
+.hero__image img,
+.photo-placeholder {
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-xl);
+  object-fit: cover;
+}
+
+.photo-placeholder {
+  background:
+    linear-gradient(
+      180deg,
+      transparent 40%,
+      rgba(0, 0, 0, 0.7)
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--pg-orange-16) 0 6px,
+      transparent 6px 26px
+    ),
+    var(--surface-alt);
+
+  border: 1px solid var(--line);
+}
+
+
+/* =========================
+   TICKER
+========================= */
+
+.ticker {
+  overflow: hidden;
+  padding: 12px 0;
+  background: var(--surface-alt);
+  border-top: 1px solid var(--line);
+}
+
+.ticker__track {
+  display: flex;
+  width: max-content;
+  animation: scroll 30s linear infinite;
+}
+
+.ticker__track span {
+  padding: 0 22px;
+  color: var(--pg-white);
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ticker__track i {
+  color: var(--fill-brand);
+  font-style: normal;
+}
+
+@keyframes scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 820px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 32px 20px;
+  }
+
+  .hero__image {
+    order: -1;
+  }
+
+  .hero__image img,
+  .photo-placeholder {
+    max-width: 300px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+
+/* =========================
+   REDUCIR ANIMACIONES
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker__track {
+    animation: none;
+  }
+}
