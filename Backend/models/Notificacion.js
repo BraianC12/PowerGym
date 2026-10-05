@@ -8,7 +8,8 @@ Notificacion.init({
   mensaje: { type: DataTypes.TEXT, allowNull: false },
   fechaProgramada: { type: DataTypes.DATEONLY, allowNull: false },
   fechaEnvio: { type: DataTypes.DATEONLY, allowNull: true },
-  estado: { type: DataTypes.STRING, defaultValue: 'Pendiente' } // Pendiente, Enviado, Error
+  estado: { type: DataTypes.STRING, defaultValue: 'Pendiente' }, // Pendiente, Enviado, Error
+  claveEnvio: {type: DataTypes.STRING,allowNull: true,unique: true}
 }, { 
   sequelize, 
   modelName: 'Notificacion', 
