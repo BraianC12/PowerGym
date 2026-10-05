@@ -2,6 +2,7 @@ require('dotenv').config();
 const app = require('./app')
 const{sequelize}=require('./models')
 const authRoutes = require('./routes/authRoutes');
+const {iniciarAvisosAutomaticos}=require('./tareas/avisosAutomaticos')
 
 const PORT = process.env.PORT || 3000;
 
@@ -9,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 sequelize.sync()
   .then(() => {
     console.log('Base de datos conectada y sincronizada.');
+    iniciarAvisosAutomaticos()
     app.listen(PORT, () => {
       console.log(`Servidor de PowerGym corriendo en http://localhost:${PORT}`);
     });
