@@ -75,27 +75,33 @@
 
         <div class="avisos-info">
           <div class="info-card">
-            <span>Avisos pendientes</span>
+            <span>Próximos avisos</span>
 
-            <strong>8</strong>
+            <strong id="statProximos">0</strong>
+          </div>
+
+          <div class="info-card">
+            <span>Total de avisos</span>
+
+            <strong id="statTotal">0</strong>
           </div>
 
           <div class="info-card">
             <span>Avisos enviados</span>
 
-            <strong>24</strong>
+            <strong id="statEnviados">0</strong>
           </div>
 
           <div class="info-card">
             <span>Avisos de hoy</span>
 
-            <strong>5</strong>
+            <strong id="statHoy">0</strong>
           </div>
         </div>
 
-        <!-- CONFIGURACIÓN -->
+        <!-- CONFIGURACIÓN (oculta: todavía no tiene backend propio) -->
 
-        <div class="configuracion">
+        <div class="configuracion" hidden>
           <div class="configuracion-header">
             <h2>Configuración de avisos</h2>
 
@@ -143,14 +149,14 @@
           <button class="btn-primary">Guardar configuración</button>
         </div>
 
-        <!-- LISTADO DE AVISOS -->
+        <!-- PRÓXIMOS AVISOS (lo que se mandaría en la próxima corrida) -->
 
         <div class="avisos-table">
           <div class="table-header">
             <div>
-              <h2>Avisos pendientes</h2>
+              <h2>Próximos avisos</h2>
 
-              <p>Socios que deben recibir un aviso de vencimiento.</p>
+              <p id="proximosBajada">Vencimientos dentro de la ventana de aviso que todavía no fueron avisados.</p>
             </div>
           </div>
 
@@ -159,95 +165,85 @@
               <tr>
                 <th>Socio</th>
 
+                <th>Email</th>
+
+                <th>Vencimiento</th>
+
+                <th>Días restantes</th>
+              </tr>
+            </thead>
+
+            <tbody id="tablaProximos">
+              <tr>
+                <td colspan="4" class="msg-fila">Cargando próximos avisos...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- LISTADO DE AVISOS -->
+
+        <div class="avisos-table">
+          <div class="table-header">
+            <div>
+              <h2>Historial de avisos</h2>
+
+              <p>Avisos de vencimiento registrados y su estado de envío.</p>
+            </div>
+
+            <button type="button" id="btnActualizar" class="btn btn-secondary">
+              Actualizar
+            </button>
+          </div>
+
+          <div class="avisos-filtros">
+            <div class="filtro">
+              <label for="filtroEstado">Estado</label>
+
+              <select id="filtroEstado">
+                <option value="todos">Todos</option>
+
+                <option value="Enviado">Enviado</option>
+
+                <option value="Pendiente">Pendiente</option>
+
+                <option value="Error">Error</option>
+              </select>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Socio</th>
+
+                <th>Email</th>
+
                 <th>Vencimiento</th>
 
                 <th>Días restantes</th>
 
-                <th>Medio</th>
+                <th>Enviado el</th>
 
                 <th>Estado</th>
-
-                <th>Acción</th>
               </tr>
             </thead>
 
-            <tbody>
+            <tbody id="tablaHistorial">
               <tr>
-                <td>Juan Pérez</td>
-
-                <td>23/09/2026</td>
-
-                <td>2 días</td>
-
-                <td>WhatsApp</td>
-
-                <td>
-                  <span class="status pending"> Pendiente </span>
-                </td>
-
-                <td>
-                  <button class="action-btn">Enviar aviso</button>
-                </td>
-              </tr>
-
-              <tr>
-                <td>Carolina López</td>
-
-                <td>26/09/2026</td>
-
-                <td>5 días</td>
-
-                <td>WhatsApp</td>
-
-                <td>
-                  <span class="status pending"> Pendiente </span>
-                </td>
-
-                <td>
-                  <button class="action-btn">Enviar aviso</button>
-                </td>
-              </tr>
-
-              <tr>
-                <td>María González</td>
-
-                <td>21/09/2026</td>
-
-                <td>Hoy</td>
-
-                <td>Email</td>
-
-                <td>
-                  <span class="status sent"> Enviado </span>
-                </td>
-
-                <td>
-                  <button class="action-btn">Reenviar</button>
-                </td>
-              </tr>
-
-              <tr>
-                <td>Lucas Fernández</td>
-
-                <td>18/09/2026</td>
-
-                <td>Vencido</td>
-
-                <td>WhatsApp</td>
-
-                <td>
-                  <span class="status failed"> Pendiente </span>
-                </td>
-
-                <td>
-                  <button class="action-btn">Enviar aviso</button>
-                </td>
+                <td colspan="6" class="msg-fila">Cargando historial...</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
     </section>
+
+    <!-- NOTIFICACIÓN -->
+    <div id="notificacion" class="notificacion">
+      <span id="notificacionIcono"></span>
+      <span id="notificacionTexto"></span>
+    </div>
 
     <footer class="site-footer">
       <div class="wrap">

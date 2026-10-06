@@ -3,7 +3,7 @@ const nodemailer = require("nodemailer")
 let transporter
 
 function obtenerTransporter() {
-  const { SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS, SMTP_FROM } =
+  const { SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS, SMTP_FROM, SMTP_REQUIRE_TLS } =
     process.env
 
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !SMTP_FROM) {
@@ -20,7 +20,7 @@ function obtenerTransporter() {
       host: SMTP_HOST,
       port,
       secure: SMTP_SECURE === "true",
-      requireTLS: true,
+      requireTLS: SMTP_REQUIRE_TLS !== "false",
       auth: {
         user: SMTP_USER,
         pass: SMTP_PASS,

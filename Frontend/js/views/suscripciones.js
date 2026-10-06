@@ -147,8 +147,8 @@ function abrirModal() {
 
   const hoy = hoyISO();
   $("fechaInicio").value = hoy;
-  form.fechaInicio.min = hoy;
-  form.fechaVencimiento.min = hoy;
+  form.fechaInicio.min = "";
+  form.fechaVencimiento.min = "";
 
   abrir(modal);
   cargarSocios();
@@ -178,12 +178,6 @@ form.addEventListener("submit", async (e) => {
   if (!suscripcion.socioId || !suscripcion.fechaInicio || !suscripcion.fechaVencimiento) {
     msg.className = "form__msg error";
     msg.textContent = "Elegí un socio y completá las fechas de inicio y vencimiento.";
-    return;
-  }
-
-  if (suscripcion.fechaInicio < hoyISO()) {
-    msg.className = "form__msg error";
-    msg.textContent = "La fecha de inicio no puede ser anterior a hoy.";
     return;
   }
 

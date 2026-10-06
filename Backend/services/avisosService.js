@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const {Suscripcion, Socio, Persona,Notificacion}= require('../models')
 const {enviarCorreo} = require('./correoService');
 
@@ -13,26 +14,33 @@ function fechaEnZona(fecha, zona) {
   return `${obtener('year')}-${obtener('month')}-${obtener('day')}`
 }
 
-function calcularFechaObjetivo(ahora= new Date()) {
+// Ventana de avisos: desde hoy (inclusive) hasta hoy + AVISOS_DIAS_ANTES.
+// Una suscripción creada con vencimiento dentro de la ventana también entra,
+// aunque su día exacto ya haya pasado.
+function ventanaAvisos(ahora= new Date()) {
   const dias= Number(process.env.AVISOS_DIAS_ANTES ?? 5)
   const zona= process.env.AVISOS_TIMEZONE||'America/Buenos_Aires'
   if (!Number.isSafeInteger(dias) || dias < 1) {
     throw new Error('AVISOS_DIAS_ANTES debe ser un entero positivo.')
   }
 
-  const hoy= fechaEnZona(ahora, zona)
-  const fecha= new Date(`${hoy}T00:00:00Z`)
+  const desde= fechaEnZona(ahora, zona)
+  const fecha= new Date(`${desde}T00:00:00Z`)
   fecha.setUTCDate(fecha.getUTCDate()+dias);
 
-  return fecha.toISOString().slice(0,10);
+  return { desde, hasta: fecha.toISOString().slice(0,10) };
+}
+
+function calcularFechaObjetivo(ahora= new Date()) {
+  return ventanaAvisos(ahora).hasta;
 }
 
 async function obtenerSuscripcionesParaAvisar(ahora = new Date()){
-  const fechaObjetivo = calcularFechaObjetivo(ahora)
+  const { desde, hasta } = ventanaAvisos(ahora)
 
   return Suscripcion.findAll({
     where: {
-      fechaVencimiento: fechaObjetivo,
+      fechaVencimiento: { [Op.between]: [desde, hasta] },
       estado: 'Vigente'
     },
     include: [{
@@ -43,7 +51,8 @@ async function obtenerSuscripcionesParaAvisar(ahora = new Date()){
         model: Persona,
         required: true
       }]
-    }]
+    }],
+    order: [['fechaVencimiento', 'ASC']]
   })
 }
 
@@ -67,7 +76,7 @@ async function procesarAvisos({ahora= new Date(),enviar= enviarCorreo}= {}) {
   const resumen= {enviados: 0,omitidos: 0,errores: 0
   }
   for (const suscripcion of suscripciones) {
-    const claveEnvio =`${suscripcion.suscripcionId}:${suscripcion.fechaVencimiento}`
+    const claveEnvio =`${suscripcion.Socio.Persona.personaId}:${fechaActual}`
     const correo = generarMensaje(suscripcion)
     let notificacion
 
@@ -104,4 +113,4 @@ async function procesarAvisos({ahora= new Date(),enviar= enviarCorreo}= {}) {
 }
 
 
-module.exports = {calcularFechaObjetivo,obtenerSuscripcionesParaAvisar,generarMensaje,procesarAvisos}
+module.exports = {fechaEnZona, ventanaAvisos, calcularFechaObjetivo, obtenerSuscripcionesParaAvisar, generarMensaje, procesarAvisos}
