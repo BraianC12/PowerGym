@@ -37,18 +37,23 @@ async function crearSuscripcion({
   email = 'ana@example.com',
   estadoSocio = 'Activo',
   estadoSuscripcion = 'Vigente',
-  vencimiento = '2026-10-10'
+  vencimiento = '2026-10-10',
+  socioId = null
 } = {}) {
-  const persona = await Persona.create({
-    nombre: 'Ana',
-    apellido: 'Perez',
-    email
-  });
+  let socio = socioId ? await Socio.findByPk(socioId) : null;
 
-  const socio = await Socio.create({
-    socioId: persona.personaId,
-    estado: estadoSocio
-  });
+  if (!socio) {
+    const persona = await Persona.create({
+      nombre: 'Ana',
+      apellido: 'Perez',
+      email
+    });
+
+    socio = await Socio.create({
+      socioId: persona.personaId,
+      estado: estadoSocio
+    });
+  }
 
   return Suscripcion.create({
     socioId: socio.socioId,
@@ -106,10 +111,12 @@ test('envía el mensaje y registra la notificación', async () => {
 
   const notificacion = await Notificacion.findOne();
 
+  const persona = await Persona.findOne({ where: { email: 'ana@example.com' } });
+
   assert.equal(notificacion.suscripcionId, suscripcion.suscripcionId);
   assert.equal(
     notificacion.claveEnvio,
-    `${suscripcion.suscripcionId}:2026-10-10`
+    `${persona.personaId}:2026-10-05`
   );
   assert.equal(notificacion.estado, 'Enviado');
   assert.equal(notificacion.fechaEnvio, '2026-10-05');
@@ -173,6 +180,51 @@ test('excluye otras fechas, socios inactivos y suscripciones canceladas', async 
   assert.equal(await Notificacion.count(), 0);
 });
 
+test('avisa los vencimientos de toda la ventana, no solo el día exacto', async () => {
+  await crearSuscripcion({ email: 'manana@x.com', vencimiento: '2026-10-07' });
+  await crearSuscripcion({ email: 'exacto@x.com', vencimiento: '2026-10-10' });
+
+  const correos = [];
+
+  const resumen = await procesarAvisos({
+    ahora: AHORA,
+    enviar: async (correo) => {
+      correos.push(correo);
+      return { messageId: 'prueba-ventana' };
+    }
+  });
+
+  assert.deepEqual(resumen, {
+    enviados: 2,
+    omitidos: 0,
+    errores: 0
+  });
+
+  assert.deepEqual(
+    correos.map((correo) => correo.destinatario).sort(),
+    ['exacto@x.com', 'manana@x.com']
+  );
+});
+
+test('no avisa suscripciones que ya vencieron', async () => {
+  await crearSuscripcion({ email: 'vencida@x.com', vencimiento: '2026-10-04' });
+
+  const resumen = await procesarAvisos({
+    ahora: AHORA,
+    enviar: async () => {
+      assert.fail('No debería enviar avisos de vencimientos pasados.');
+    }
+  });
+
+  assert.deepEqual(resumen, {
+    enviados: 0,
+    omitidos: 0,
+    errores: 0
+  });
+
+  assert.equal(await Notificacion.count(), 0);
+});
+
 test('registra un error de envío y no lo reintenta automáticamente', async () => {
   await crearSuscripcion();
 
@@ -203,4 +255,36 @@ test('registra un error de envío y no lo reintenta automáticamente', async () 
 
   assert.equal(intentos, 1);
   assert.equal(segundaEjecucion.omitidos, 1);
+});
+
+test('una persona con varias suscripciones en la ventana recibe un único correo', async () => {
+  await crearSuscripcion({ email: 'doble@x.com', vencimiento: '2026-10-07' });
+
+  const persona = await Persona.findOne({ where: { email: 'doble@x.com' } });
+
+  await crearSuscripcion({
+    email: 'doble@x.com',
+    vencimiento: '2026-10-10',
+    socioId: persona.personaId
+  });
+
+  const correos = [];
+
+  const resumen = await procesarAvisos({
+    ahora: AHORA,
+    enviar: async (correo) => {
+      correos.push(correo);
+      return { messageId: 'prueba-dedupe' };
+    }
+  });
+
+  assert.deepEqual(resumen, {
+    enviados: 1,
+    omitidos: 1,
+    errores: 0
+  });
+
+  assert.equal(correos.length, 1);
+  assert.match(correos[0].mensaje, /07\/10\/2026/);
+  assert.equal(await Notificacion.count(), 1);
 });
