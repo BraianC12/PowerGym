@@ -26,7 +26,32 @@
 }
 
 .socios-info .info-card {
-  min-height: 140px;
+  min-height: 92px;
+  padding: 16px 20px;
+  gap: 14px;
+}
+
+.socios-info .stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+}
+
+.socios-info .stat-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.socios-info .stat-body span {
+  font-size: 12.5px;
+}
+
+.socios-info .stat-body strong {
+  font-size: var(--fs-stat-sm);
+}
+
+.socios-info .stat-body small {
+  font-size: 11px;
 }
 
 .socios-table {

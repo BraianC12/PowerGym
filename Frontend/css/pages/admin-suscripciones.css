@@ -20,8 +20,28 @@
 }
 
 .vencimientos-info .info-card {
-  display: block;
-  min-height: auto;
+  min-height: 92px;
+  padding: 16px 20px;
+  gap: 14px;
+}
+
+.vencimientos-info .stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+}
+
+.vencimientos-info .stat-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.vencimientos-info .stat-body span {
+  font-size: 12.5px;
+}
+
+.vencimientos-info .stat-body strong {
+  font-size: var(--fs-stat-sm);
 }
 
 .vencimientos-table {

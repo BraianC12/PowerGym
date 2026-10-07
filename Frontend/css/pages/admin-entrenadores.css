@@ -20,8 +20,28 @@
 }
 
 .entrenadores-info .info-card {
-  display: block;
-  min-height: auto;
+  min-height: 92px;
+  padding: 16px 20px;
+  gap: 14px;
+}
+
+.entrenadores-info .stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+}
+
+.entrenadores-info .stat-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.entrenadores-info .stat-body span {
+  font-size: 12.5px;
+}
+
+.entrenadores-info .stat-body strong {
+  font-size: var(--fs-stat-sm);
 }
 
 .entrenadores-table {
