@@ -140,3 +140,9 @@
     min-width: 850px;
   }
 }
+
+@media (max-width: 500px) {
+  .btn-primary {
+    width: 100%;
+  }
+}

@@ -8,6 +8,15 @@
   padding: 55px 0 70px;
 }
 
+.socios-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
 .socios-header h1 {
   margin-bottom: 8px;
   font-size: 2.5rem;
@@ -68,6 +77,11 @@
 @media (max-width: 800px) {
   .socios {
     padding: 35px 0 50px;
+  }
+
+  .socios-header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .socios-header h1 {

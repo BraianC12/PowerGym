@@ -7,6 +7,15 @@
   padding: 70px 0;
 }
 
+.entrenadores-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
 .entrenadores-header h1 {
   margin-bottom: 8px;
   font-size: 2.6rem;
@@ -101,6 +110,11 @@
 }
 
 @media (max-width: 800px) {
+  .entrenadores-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .entrenadores-info {
     grid-template-columns: 1fr;
   }
@@ -111,5 +125,11 @@
 
   table {
     min-width: 900px;
+  }
+}
+
+@media (max-width: 500px) {
+  .btn-primary {
+    width: 100%;
   }
 }

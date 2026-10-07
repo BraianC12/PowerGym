@@ -211,3 +211,50 @@ body {
   color: var(--pg-white);
   font-weight: 700;
 }
+
+@media (max-width: 800px) {
+  .calendar-container {
+    padding: 20px;
+  }
+
+  .calendar-header {
+    gap: 10px;
+  }
+
+  .calendar-weekdays div {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+
+  .calendar-day {
+    min-height: 56px;
+    padding: 8px 6px;
+  }
+}
+
+@media (max-width: 500px) {
+  .calendar-container {
+    padding: 14px;
+  }
+
+  .calendar-header h2 {
+    font-size: 22px;
+  }
+
+  .calendar-header button {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+
+  .calendar-weekdays div {
+    padding: 6px 4px;
+    font-size: 11px;
+  }
+
+  .calendar-day {
+    min-height: 44px;
+    padding: 6px 4px;
+    font-size: 12px;
+  }
+}
