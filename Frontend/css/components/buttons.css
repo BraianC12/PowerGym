@@ -60,15 +60,32 @@
 }
 
 .btn-outline {
-  border: 1px solid var(--control-line);
-  background: transparent;
+  width: auto;
+  min-width: 200px;
+  padding: 10px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--text-invert);
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  backdrop-filter: blur(4px);
 }
 
 .btn-outline:hover {
   border-color: var(--accent);
-  color: var(--accent);
-  transform: none;
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* ---------- Botones "crear" del panel admin ---------- */
+
+.btn-create {
+  width: auto;
+  min-width: 200px;
+  padding: 10px 32px;
+  font-size: 13px;
+  letter-spacing: 0.01em;
 }
 
 /* ---------- Botones de accion en tablas ---------- */

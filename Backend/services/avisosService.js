@@ -69,14 +69,84 @@ function generarMensaje(suscripcion){
 }
 
 
+// Vencimiento más próximo de cada persona. Las suscripciones llegan
+// ordenadas por fechaVencimiento ASC, así que la primera que aparece
+// de una persona es la que manda para el resto de la ventana.
+function vencimientoMasProximoPorPersona(suscripciones) {
+  const vencimientoPorPersona= new Map()
+  for (const suscripcion of suscripciones) {
+    const personaId= suscripcion.Socio.Persona.personaId
+    if (!vencimientoPorPersona.has(personaId)) {
+      vencimientoPorPersona.set(personaId, suscripcion.fechaVencimiento)
+    }
+  }
+  return vencimientoPorPersona
+}
+
+// Personas que ya tienen su aviso para el vencimiento que se está por
+// avisar: cubre la clave nueva (personaId:fechaVencimiento) y también las
+// suscripciones que ya recibieron su correo con claves anteriores.
+async function personasYaAvisadas(suscripciones) {
+  const avisadas= new Set()
+  if (!suscripciones.length) return avisadas
+
+  const vencimientoPorPersona= vencimientoMasProximoPorPersona(suscripciones)
+  const claves= [...vencimientoPorPersona]
+    .map(([personaId, vencimiento])=> `${personaId}:${vencimiento}`)
+  const suscripcionesIds= suscripciones.map((suscripcion)=> suscripcion.suscripcionId)
+  const personaDeSuscripcion= new Map(
+    suscripciones.map((suscripcion)=> [
+      suscripcion.suscripcionId,
+      String(suscripcion.Socio.Persona.personaId)
+    ])
+  )
+
+  const [avisadasPorClave, avisadasPorSuscripcion]= await Promise.all([
+    Notificacion.findAll({
+      where: { estado: 'Enviado', claveEnvio: claves },
+      attributes: ['claveEnvio']
+    }),
+    Notificacion.findAll({
+      where: { estado: 'Enviado', suscripcionId: suscripcionesIds },
+      attributes: ['suscripcionId']
+    })
+  ])
+
+  for (const notificacion of avisadasPorClave) {
+    avisadas.add(String(notificacion.claveEnvio.split(':')[0]))
+  }
+
+  for (const notificacion of avisadasPorSuscripcion) {
+    const personaId= personaDeSuscripcion.get(notificacion.suscripcionId)
+    if (personaId) avisadas.add(personaId)
+  }
+
+  return avisadas
+}
+
+
 async function procesarAvisos({ahora= new Date(),enviar= enviarCorreo}= {}) {
   const suscripciones=await obtenerSuscripcionesParaAvisar(ahora)
   const zona= process.env.AVISOS_TIMEZONE|| 'America/Buenos_Aires'
   const fechaActual= fechaEnZona(ahora, zona)
   const resumen= {enviados: 0,omitidos: 0,errores: 0
   }
+
+  // Un solo aviso por vencimiento: la clave usa el vencimiento más próximo
+  // de la persona, así los días siguientes, mientras la suscripción siga
+  // dentro de la ventana, el aviso ya figura como enviado y se omite.
+  const vencimientoPorPersona= vencimientoMasProximoPorPersona(suscripciones)
+  const yaAvisadas= await personasYaAvisadas(suscripciones)
+
   for (const suscripcion of suscripciones) {
-    const claveEnvio =`${suscripcion.Socio.Persona.personaId}:${fechaActual}`
+    const personaId= suscripcion.Socio.Persona.personaId
+
+    if (yaAvisadas.has(String(personaId))) {
+      resumen.omitidos++
+      continue
+    }
+
+    const claveEnvio =`${personaId}:${vencimientoPorPersona.get(personaId)}`
     const correo = generarMensaje(suscripcion)
     let notificacion
 
@@ -107,10 +177,11 @@ async function procesarAvisos({ahora= new Date(),enviar= enviarCorreo}= {}) {
     await notificacion.update({
       estado: 'Enviado',fechaEnvio: fechaActual
     })
+    yaAvisadas.add(String(personaId))
     resumen.enviados++
   }
   return resumen
 }
 
 
-module.exports = {fechaEnZona, ventanaAvisos, calcularFechaObjetivo, obtenerSuscripcionesParaAvisar, generarMensaje, procesarAvisos}
+module.exports = {fechaEnZona, ventanaAvisos, calcularFechaObjetivo, obtenerSuscripcionesParaAvisar, generarMensaje, personasYaAvisadas, procesarAvisos}

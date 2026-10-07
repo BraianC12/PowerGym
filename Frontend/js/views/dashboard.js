@@ -1,12 +1,74 @@
 // ==========================================================
 // VIEW / DASHBOARD ADMINISTRADOR
-// Calendario del mes. El resto del layout viene del CSS.
+// Resumen con datos de la API + calendario del mes.
 // ==========================================================
 
 import { $ } from "../components/dom.js";
 import { exigirSesion } from "../api/sesion.js";
+import { obtenerSocios } from "../api/sociosApi.js";
+import { obtenerEntrenadores } from "../api/entrenadoresApi.js";
+import { obtenerHistorial } from "../api/avisosApi.js";
 
 exigirSesion();
+
+// ---------- Resumen ----------
+
+const statSociosActivos = $("statSociosActivos");
+const statEntrenadores = $("statEntrenadores");
+const statVencimientos = $("statVencimientos");
+
+function claseEstado(estado) {
+  const t = String(estado || "").toLowerCase();
+
+  if (t.includes("inactiv") || t.includes("baja")) {
+    return "inactivo";
+  }
+
+  if (t.includes("activ")) {
+    return "activo";
+  }
+
+  return "inactivo";
+}
+
+async function cargarResumen() {
+  try {
+    const [socios, entrenadores] = await Promise.all([
+      obtenerSocios(),
+      obtenerEntrenadores(),
+    ]);
+
+    const sociosActivos = Array.isArray(socios)
+      ? socios.filter((s) => claseEstado(s.estado) === "activo").length
+      : 0;
+
+    const entrenadoresTotal = Array.isArray(entrenadores)
+      ? entrenadores.length
+      : Array.isArray(entrenadores?.entrenadores)
+        ? entrenadores.entrenadores.length
+        : 0;
+
+    statSociosActivos.textContent = sociosActivos;
+    statEntrenadores.textContent = entrenadoresTotal;
+  } catch (error) {
+    console.error("No se pudo cargar el resumen:", error);
+  }
+
+  cargarVencimientos();
+}
+
+async function cargarVencimientos() {
+  try {
+    const { resumen } = await obtenerHistorial();
+    statVencimientos.textContent = Number(resumen?.hoy) || 0;
+  } catch (error) {
+    console.error("No se pudo cargar los vencimientos:", error);
+  }
+}
+
+cargarResumen();
+
+// ---------- Calendario ----------
 
 const calendar = $("calendar");
 const calendarTitle = $("calendarTitle");

@@ -3,7 +3,8 @@ const {
   fechaEnZona,
   ventanaAvisos,
   obtenerSuscripcionesParaAvisar,
-  generarMensaje
+  generarMensaje,
+  personasYaAvisadas
 } = require('../services/avisosService');
 
 const ESTADOS_VALIDOS = ['Pendiente', 'Enviado', 'Error'];
@@ -72,31 +73,16 @@ const historial = async (req, res) => {
 // Próximos avisos: qué se enviaría en la próxima corrida del cron.
 // Cubre toda la ventana de aviso (hoy .. hoy + AVISOS_DIAS_ANTES).
 // Solo lectura: no crea notificaciones ni manda correos.
-// La verificación es igual que el envío real: 1 aviso por persona y día
-// (claveEnvio = personaId:fechaActual), así que una persona con varias
-// suscripciones en la ventana aparece UNA sola vez (la más urgente).
+// Usa la misma regla que el envío real: 1 aviso por persona y vencimiento,
+// así que una persona con varias suscripciones en la ventana aparece UNA
+// sola vez (la más urgente) y una vez enviado no vuelve a aparecer.
 const pendientes = async (req, res) => {
   try {
     const ahora = new Date();
-    const zona = process.env.AVISOS_TIMEZONE || 'America/Buenos_Aires';
-    const hoy = fechaEnZona(ahora, zona);
     const { desde, hasta } = ventanaAvisos(ahora);
     const suscripciones = await obtenerSuscripcionesParaAvisar(ahora);
 
-    const personasParaAvisar = new Set(
-      suscripciones.map((s) => s.Socio.Persona.personaId)
-    );
-
-    const clavesAvisadasHoy = personasParaAvisar.size
-      ? await Notificacion.findAll({
-          where: { claveEnvio: [...personasParaAvisar].map((id) => `${id}:${hoy}`) },
-          attributes: ['claveEnvio']
-        })
-      : [];
-
-    const avisadasHoy = new Set(
-      clavesAvisadasHoy.map((n) => n.claveEnvio.split(':')[0])
-    );
+    const yaAvisadas = await personasYaAvisadas(suscripciones);
 
     // Ya viene ordenada por vencimiento ASC: la primera suscripción que
     // aparece de una persona es la que se enviaría (la más cercana).
@@ -104,7 +90,7 @@ const pendientes = async (req, res) => {
 
     const porAvisar = suscripciones.filter((s) => {
       const personaId = String(s.Socio.Persona.personaId);
-      if (avisadasHoy.has(personaId) || vistos.has(personaId)) return false;
+      if (yaAvisadas.has(personaId) || vistos.has(personaId)) return false;
       vistos.add(personaId);
       return true;
     });

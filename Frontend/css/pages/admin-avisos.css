@@ -20,8 +20,28 @@
 }
 
 .avisos-info .info-card {
-  display: block;
-  min-height: auto;
+  min-height: 92px;
+  padding: 16px 20px;
+  gap: 14px;
+}
+
+.avisos-info .stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+}
+
+.avisos-info .stat-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.avisos-info .stat-body span {
+  font-size: 12.5px;
+}
+
+.avisos-info .stat-body strong {
+  font-size: var(--fs-stat-sm);
 }
 
 .configuracion {
@@ -118,5 +138,11 @@
 
   table {
     min-width: 850px;
+  }
+}
+
+@media (max-width: 500px) {
+  .btn-primary {
+    width: 100%;
   }
 }
