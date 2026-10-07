@@ -91,7 +91,11 @@ function render() {
       <td>${v.fecha ? v.fecha.toLocaleDateString("es-AR") : "-"}</td>
       <td>${textoDias(v.dias)}</td>
       <td><span class="estado ${v.estado}">${ETIQUETA[v.estado]}</span></td>
-      <td><button class="action-btn">Avisar</button></td>
+      <td>${
+        v.estado === "vencido" || v.estado === "hoy"
+          ? `<button type="button" class="action-btn">Renovar</button>`
+          : ""
+      }</td>
     </tr>`,
     )
     .join("");
