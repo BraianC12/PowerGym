@@ -116,7 +116,7 @@ test('envía el mensaje y registra la notificación', async () => {
   assert.equal(notificacion.suscripcionId, suscripcion.suscripcionId);
   assert.equal(
     notificacion.claveEnvio,
-    `${persona.personaId}:2026-10-05`
+    `${persona.personaId}:2026-10-10`
   );
   assert.equal(notificacion.estado, 'Enviado');
   assert.equal(notificacion.fechaEnvio, '2026-10-05');
@@ -146,6 +146,104 @@ test('una segunda ejecución no vuelve a enviar el aviso', async () => {
     omitidos: 1,
     errores: 0
   });
+});
+
+test('solo envía un aviso por vencimiento, aunque sigan pasando los días', async () => {
+  await crearSuscripcion();
+
+  let cantidadEnvios = 0;
+  const enviar = async () => {
+    cantidadEnvios++;
+    return { messageId: 'prueba-unavez' };
+  };
+
+  const primero = await procesarAvisos({ ahora: AHORA, enviar });
+  const segundo = await procesarAvisos({
+    ahora: new Date('2026-10-06T15:00:00Z'),
+    enviar
+  });
+  const tercero = await procesarAvisos({
+    ahora: new Date('2026-10-07T15:00:00Z'),
+    enviar
+  });
+
+  assert.equal(cantidadEnvios, 1);
+  assert.equal(await Notificacion.count(), 1);
+
+  assert.deepEqual(primero, { enviados: 1, omitidos: 0, errores: 0 });
+  assert.deepEqual(segundo, { enviados: 0, omitidos: 1, errores: 0 });
+  assert.deepEqual(tercero, { enviados: 0, omitidos: 1, errores: 0 });
+});
+
+test('no reenvía si esa suscripción ya tiene un aviso con clave antigua', async () => {
+  const suscripcion = await crearSuscripcion();
+
+  // Formato anterior de la clave (persona:fechaDeEnvío).
+  await Notificacion.create({
+    suscripcionId: suscripcion.suscripcionId,
+    claveEnvio: `${suscripcion.socioId}:2026-10-06`,
+    mensaje: 'Aviso viejo',
+    fechaProgramada: '2026-10-06',
+    fechaEnvio: '2026-10-06',
+    estado: 'Enviado'
+  });
+
+  const resumen = await procesarAvisos({
+    ahora: AHORA,
+    enviar: async () => {
+      assert.fail('No debería reenviar un aviso ya enviado.');
+    }
+  });
+
+  assert.deepEqual(resumen, { enviados: 0, omitidos: 1, errores: 0 });
+  assert.equal(await Notificacion.count(), 1);
+});
+
+test('un vencimiento nuevo se avisa una sola vez, sin repetir el anterior', async () => {
+  await crearSuscripcion({ email: 'renovada@x.com', vencimiento: '2026-10-07' });
+
+  const persona = await Persona.findOne({ where: { email: 'renovada@x.com' } });
+  const correos = [];
+  const enviar = async (correo) => {
+    correos.push(correo);
+    return { messageId: 'nuevo-vencimiento' };
+  };
+
+  // Primer aviso: por el vencimiento del 07/10.
+  const primero = await procesarAvisos({ ahora: AHORA, enviar });
+  assert.deepEqual(primero, { enviados: 1, omitidos: 0, errores: 0 });
+
+  // Aparece una suscripción nueva con vencimiento posterior.
+  await crearSuscripcion({
+    email: 'renovada@x.com',
+    vencimiento: '2026-10-12',
+    socioId: persona.personaId
+  });
+
+  // 08/10: el vencimiento anterior ya salió de la ventana y entra el nuevo.
+  const segundo = await procesarAvisos({
+    ahora: new Date('2026-10-08T15:00:00Z'),
+    enviar
+  });
+
+  assert.deepEqual(segundo, { enviados: 1, omitidos: 0, errores: 0 });
+  assert.equal(correos.length, 2);
+  assert.match(correos[1].mensaje, /12\/10\/2026/);
+
+  // 09/10 y 10/10: el vencimiento nuevo ya quedó avisado.
+  const tercero = await procesarAvisos({
+    ahora: new Date('2026-10-09T15:00:00Z'),
+    enviar
+  });
+  const cuarto = await procesarAvisos({
+    ahora: new Date('2026-10-10T15:00:00Z'),
+    enviar
+  });
+
+  assert.equal(correos.length, 2);
+  assert.equal(await Notificacion.count(), 2);
+  assert.deepEqual(tercero, { enviados: 0, omitidos: 1, errores: 0 });
+  assert.deepEqual(cuarto, { enviados: 0, omitidos: 1, errores: 0 });
 });
 
 test('excluye otras fechas, socios inactivos y suscripciones canceladas', async () => {
