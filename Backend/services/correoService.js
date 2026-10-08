@@ -25,6 +25,9 @@ function obtenerTransporter() {
         user: SMTP_USER,
         pass: SMTP_PASS,
       },
+      tls: {
+        rejectUnauthorized: false
+      },
       connectionTimeout: 15000,
       greetingTimeout: 15000,
       socketTimeout: 30000,
