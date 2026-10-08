@@ -5,7 +5,8 @@ const socioRoutes=require('./routes/socioRoutes')
 const  administradorRoutes=require('./routes/administradorRoutes')
 const vencimientoRoutes=require('./routes/vencimientosRoutes')
 const authRoutes=require('./routes/authRoutes')
-const avisosRoutes = require('./routes/avisosRoutes');  
+const avisosRoutes = require('./routes/avisosRoutes');
+const suscripcionRoutes = require('./routes/suscripcionRoutes');
 const app=express()
 app.use(express.json())
 app.use(cors())
@@ -14,5 +15,6 @@ app.use('/api/socios',socioRoutes)
 app.use('/api/auth',authRoutes)
 app.use('/api/staff',administradorRoutes)
 app.use('/api/suscripciones',vencimientoRoutes)
-app.use('/api/avisos', avisosRoutes) 
+app.use('/api/avisos', avisosRoutes)
+app.use('/api/suscripciones', suscripcionRoutes)
 module.exports=app

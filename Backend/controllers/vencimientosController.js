@@ -32,24 +32,37 @@ const crearSuscripcion = async (req, res) => {
     }
 };
 
-
 const obtenerVencimientos = async (req, res) => {
     try {
+        // Buscamos todas, pero ORDENADAS por fecha de vencimiento (la más nueva primero)
         const suscripciones = await Suscripcion.findAll({
             include: [{
                 model: Socio,
                 include: [{ model: Persona}]
-            }]
+            }],
+            order: [['fechaVencimiento', 'DESC']] // <--- ESTO ES CLAVE
         });
+
+        //Filtramos para quedarnos ÚNICAMENTE con la última de cada socio
+        const suscripcionesUnicas = [];
+        const sociosVistos = new Set();
+
+        for (const suscripcion of suscripciones) {
+            // Si todavía no vimos a este socio, guardamos esta suscripción (que es su más reciente)
+            if (!sociosVistos.has(suscripcion.socioId)) {
+                suscripcionesUnicas.push(suscripcion);
+                sociosVistos.add(suscripcion.socioId); // Lo anotamos como ya visto
+            }
+        }
 
         const hoy = new Date();
         hoy.setHours(0, 0, 0, 0);
 
         const limiteProximoVencer = new Date(hoy);
-        limiteProximoVencer.setDate(hoy.getDate() + 5); //consideramos "próxima a vencer" si faltan 5 días o menos
+        limiteProximoVencer.setDate(hoy.getDate() + 5);
 
-        //mapeamos los resultados
-        const vencimientos = suscripciones.map(suscripcion => {
+        // Mapeamos PERO usamos el arreglo filtrado (suscripcionesUnicas)
+        const vencimientos = suscripcionesUnicas.map(suscripcion => {
             const fechaVen = new Date(suscripcion.fechaVencimiento + 'T00:00:00');
             let estadoCalculado = suscripcion.estado;
 
