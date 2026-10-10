@@ -419,3 +419,66 @@ test('una persona con varias suscripciones en la ventana recibe un único correo
   assert.match(correos[0].mensaje, /07\/10\/2026/);
   assert.equal(await Notificacion.count(), 1);
 });
+
+test('tras renovar, no avisa la cuota vieja y vuelve a avisar cuando vence la nueva', async () => {
+  // Cuota actual: vence dentro de la ventana de avisos.
+  const suscripcion = await crearSuscripcion({
+    email: 'ciclo@x.com',
+    vencimiento: '2026-10-10'
+  });
+  const persona = await Persona.findOne({ where: { email: 'ciclo@x.com' } });
+
+  const correos = [];
+  const enviar = async (correo) => {
+    correos.push(correo);
+    return { messageId: `aviso-${correos.length}` };
+  };
+
+  // 1) Se avisa la cuota que está por vencer.
+  const primero = await procesarAvisos({ ahora: AHORA, enviar });
+  assert.deepEqual(primero, { enviados: 1, omitidos: 0, errores: 0 });
+  assert.match(correos[0].mensaje, /10\/10\/2026/);
+
+  // 2) El socio renueva: la vieja queda "Renovada" y la nueva vence fuera
+  //    de la ventana, así que no se vuelve a avisar por la anterior.
+  await suscripcion.update({ estado: 'Renovada' });
+  await crearSuscripcion({
+    email: 'ciclo@x.com',
+    vencimiento: '2026-11-05',
+    socioId: persona.personaId
+  });
+
+  const duranteRenovacion = await procesarAvisos({
+    ahora: new Date('2026-10-07T15:00:00Z'),
+    enviar
+  });
+
+  assert.deepEqual(
+    duranteRenovacion,
+    { enviados: 0, omitidos: 0, errores: 0 },
+    'No debe avisar la cuota ya renovada'
+  );
+  assert.equal(correos.length, 1);
+  assert.equal(await Notificacion.count(), 1);
+
+  // 3) Cuando la suscripción nueva entra en la ventana, se avisa de nuevo
+  //    porque la clave cambia (nueva fecha de vencimiento).
+  const segundo = await procesarAvisos({
+    ahora: new Date('2026-11-02T15:00:00Z'),
+    enviar
+  });
+
+  assert.deepEqual(segundo, { enviados: 1, omitidos: 0, errores: 0 });
+  assert.equal(correos.length, 2);
+  assert.match(correos[1].mensaje, /05\/11\/2026/);
+
+  // 4) Mismo día, ya fue avisada: no duplica.
+  const tercero = await procesarAvisos({
+    ahora: new Date('2026-11-02T18:00:00Z'),
+    enviar
+  });
+
+  assert.deepEqual(tercero, { enviados: 0, omitidos: 1, errores: 0 });
+  assert.equal(correos.length, 2);
+  assert.equal(await Notificacion.count(), 2);
+});
