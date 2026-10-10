@@ -4,12 +4,14 @@
 // suscripción. Los datos vienen de api/suscripcionesApi.js.
 // ==========================================================
 
-import { $, esc, hoyISO, textoDias } from "../components/dom.js";
+import { $, esc, hoyISO, fechaLocal, textoDias } from "../components/dom.js";
 import { abrir, cerrar, conectarCierre } from "../components/modal.js";
+import { notificacion } from "../components/notifications.js";
 import {
   obtenerVencimientos,
   obtenerSociosActivos,
   crearSuscripcion,
+  renovarSuscripcion,
 } from "../api/suscripcionesApi.js";
 
 import { exigirSesion } from "../api/sesion.js";
@@ -40,7 +42,7 @@ async function cargarVencimientos() {
     render();
   } catch (error) {
     console.error(error);
-    $("tablaVencimientos").innerHTML = `<tr><td colspan="7" class="msg-fila">No se pudieron cargar los vencimientos. Revisá que la API esté corriendo.</td></tr>`;
+    $("tablaVencimientos").innerHTML = `<tr><td colspan="8" class="msg-fila">No se pudieron cargar los vencimientos. Revisá que la API esté corriendo.</td></tr>`;
   }
 }
 
@@ -77,20 +79,21 @@ function render() {
       vencimientos.length === 0
         ? "Todavía no hay suscripciones. Creá la primera con “+ Nueva suscripción”."
         : "Ningún socio coincide con los filtros.";
-    tbody.innerHTML = `<tr><td colspan="7" class="msg-fila">${txt}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" class="msg-fila">${txt}</td></tr>`;
     return;
   }
 
   tbody.innerHTML = lista
     .map(
       (v) => `
-    <tr>
+    <tr data-socio-id="${Number(v.socioId)}">
       <td>${esc(v.nombre)}</td>
       <td>${esc(v.contacto)}</td>
       <td>${v.inicio ? v.inicio.toLocaleDateString("es-AR") : "-"}</td>
       <td>${v.fecha ? v.fecha.toLocaleDateString("es-AR") : "-"}</td>
       <td>${textoDias(v.dias)}</td>
       <td><span class="estado ${v.estado}">${ETIQUETA[v.estado]}</span></td>
+      <td class="celda-comentario">${esc(v.comentario) || "-"}</td>
       <td>${
         v.estado === "vencido" || v.estado === "hoy"
           ? `<button type="button" class="action-btn">Renovar</button>`
@@ -114,6 +117,87 @@ $("limpiarFiltros").addEventListener("click", () => {
   $("filtroEstado").value = "todos";
   $("ordenar").value = "vencimiento-asc";
   render();
+});
+
+// ======================================================
+// RENOVAR SUSCRIPCIÓN
+// ======================================================
+
+const modalRenovar = $("modalRenovar");
+const formRenovar = $("formRenovar");
+const msgRenovar = $("form-msg-renovar");
+
+let renovarSocioId = null;
+
+// Fecha por defecto: hoy + 30 días (mismo criterio que el backend)
+function renovarFechaPorDefecto() {
+  const f = fechaLocal(hoyISO());
+  f.setDate(f.getDate() + 30);
+  return `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, "0")}-${String(f.getDate()).padStart(2, "0")}`;
+}
+
+function abrirRenovar(v) {
+  renovarSocioId = v.socioId;
+  $("renovarSocio").value = v.nombre;
+  $("renovarFecha").value = renovarFechaPorDefecto();
+  $("renovarFecha").min = hoyISO();
+  $("renovarComentario").value = "";
+  msgRenovar.className = "form__msg";
+  msgRenovar.textContent = "";
+  abrir(modalRenovar);
+}
+
+function cerrarRenovar() {
+  cerrar(modalRenovar);
+  formRenovar.reset();
+  renovarSocioId = null;
+}
+
+$("tablaVencimientos").addEventListener("click", (e) => {
+  const boton = e.target.closest("button.action-btn");
+  if (!boton) return;
+
+  const fila = boton.closest("tr");
+  const v = vencimientos.find(
+    (item) => item.socioId === Number(fila.dataset.socioId),
+  );
+  if (!v || !v.socioId) return;
+
+  abrirRenovar(v);
+});
+
+conectarCierre(modalRenovar, $("btnCerrarRenovar"), () => {
+  formRenovar.reset();
+  renovarSocioId = null;
+});
+
+formRenovar.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const datos = {
+    fechaVencimiento: $("renovarFecha").value,
+    comentario: $("renovarComentario").value.trim(),
+  };
+
+  if (!datos.fechaVencimiento) {
+    msgRenovar.className = "form__msg error";
+    msgRenovar.textContent = "Elegí la nueva fecha de vencimiento.";
+    return;
+  }
+
+  const boton = e.submitter;
+  if (boton) boton.disabled = true;
+
+  try {
+    const data = await renovarSuscripcion(renovarSocioId, datos);
+    cerrarRenovar();
+    notificacion(data?.mensaje || "Suscripción renovada.");
+    cargarVencimientos();
+  } catch (error) {
+    msgRenovar.className = "form__msg error";
+    msgRenovar.textContent = error.message;
+    if (boton) boton.disabled = false;
+  }
 });
 
 // ======================================================

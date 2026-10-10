@@ -23,12 +23,14 @@ export function normalizarVencimiento(v) {
   else if (dias !== null && dias <= 5) estado = "proximo"; // mismo criterio que el backend (5 días)
 
   return {
+    socioId: v.socioId,
     nombre: v.socio || "Socio desconocido",
     contacto: v.contacto || "-",
     inicio,
     fecha,
     dias,
     estado,
+    comentario: v.comentario || "",
   };
 }
 
@@ -56,5 +58,12 @@ export function crearSuscripcion(suscripcion) {
     method: "POST",
     body: suscripcion,
     error: "Error al crear la suscripción",
+  });
+}
+export function renovarSuscripcion(socioId, datos = {}) {
+  return request(`${RUTA}/renovar/${socioId}`, {
+    method: "POST",
+    body: datos,
+    error: "Error al renovar la suscripción",
   });
 }

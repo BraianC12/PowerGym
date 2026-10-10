@@ -78,11 +78,13 @@ const obtenerVencimientos = async (req, res) => {
 
             return {
                 suscripcionId: suscripcion.suscripcionId,
+                socioId: suscripcion.socioId,
                 socio: suscripcion.Socio ? `${suscripcion.Socio.Persona.nombre} ${suscripcion.Socio.Persona.apellido}` : 'Socio Desconocido',
                 contacto: suscripcion.Socio ? suscripcion.Socio.Persona.telefono : 'Sin teléfono',
                 fechaInicio: suscripcion.fechaInicio,
                 fechaVencimiento: suscripcion.fechaVencimiento,
-                estado: estadoCalculado
+                estado: estadoCalculado,
+                comentario: suscripcion.comentario || ''
             };
         });
 

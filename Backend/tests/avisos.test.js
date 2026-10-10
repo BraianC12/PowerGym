@@ -246,6 +246,39 @@ test('un vencimiento nuevo se avisa una sola vez, sin repetir el anterior', asyn
   assert.deepEqual(cuarto, { enviados: 0, omitidos: 1, errores: 0 });
 });
 
+test('no avisa una suscripción que fue renovada', async () => {
+  await crearSuscripcion({ email: 'renovada2@x.com', vencimiento: '2026-10-07' });
+
+  const persona = await Persona.findOne({ where: { email: 'renovada2@x.com' } });
+
+  // Simula la renovación: la vieja queda como 'Renovada' y se crea una nueva
+  // con vencimiento posterior (fuera de la ventana de aviso).
+  await Suscripcion.update(
+    { estado: 'Renovada' },
+    { where: { socioId: persona.personaId } }
+  );
+  await crearSuscripcion({
+    email: 'renovada2@x.com',
+    vencimiento: '2026-11-01',
+    socioId: persona.personaId
+  });
+
+  const resumen = await procesarAvisos({
+    ahora: AHORA,
+    enviar: async () => {
+      assert.fail('No debería avisar a quien ya renovó.');
+    }
+  });
+
+  assert.deepEqual(resumen, {
+    enviados: 0,
+    omitidos: 0,
+    errores: 0
+  });
+
+  assert.equal(await Notificacion.count(), 0);
+});
+
 test('excluye otras fechas, socios inactivos y suscripciones canceladas', async () => {
   await crearSuscripcion({
     email: 'otrafecha@example.com',

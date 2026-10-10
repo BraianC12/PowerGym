@@ -46,6 +46,14 @@ test('renueva la suscripción de un socio vencido (Caso A) sumando 30 días desd
   
   const nuevaSub = await Suscripcion.findOne({ where: { socioId: socioIdPrueba }, order: [['fechaVencimiento', 'DESC']] });
   assert.equal(nuevaSub.estado, 'Vigente');
+
+  // La suscripción anterior debe quedar marcada como Renovada para
+  // que los avisos automáticos no la vuelvan a avisar.
+  const viejaSub = await Suscripcion.findOne({
+      where: { socioId: socioIdPrueba },
+      order: [['fechaVencimiento', 'ASC']]
+  });
+  assert.equal(viejaSub.estado, 'Renovada', 'La suscripción anterior debe quedar marcada como Renovada');
 });
 
 test('renueva la suscripción de un socio activo (Caso B) sumando 30 días a su vencimiento original', async () => {
@@ -78,4 +86,57 @@ test('renueva la suscripción de un socio activo (Caso B) sumando 30 días a su 
   const fechaEsperadaStr = fechaEsperada.toISOString().slice(0, 10);
 
   assert.equal(nuevaSub.fechaVencimiento, fechaEsperadaStr, 'La fecha debe sumar 30 días al vencimiento original');
+});
+
+test('renueva con fecha elegida y comenta la renovación (3er mes)', async () => {
+  // Suscripción vencida para que la base del cálculo sea hoy
+  const ayer = new Date();
+  ayer.setDate(ayer.getDate() - 1);
+
+  await Suscripcion.create({
+    socioId: socioIdPrueba,
+    fechaInicio: '2026-08-01',
+    fechaVencimiento: ayer.toISOString().slice(0, 10),
+    estado: 'Vencida'
+  });
+
+  const fechaElegida = new Date();
+  fechaElegida.setDate(fechaElegida.getDate() + 45);
+  const fechaElegidaStr = fechaElegida.toISOString().slice(0, 10);
+
+  const respuesta = await request(app)
+    .post(`/api/suscripciones/renovar/${socioIdPrueba}`)
+    .send({
+      fechaVencimiento: fechaElegidaStr,
+      comentario: '3er mes renovado'
+    });
+
+  assert.equal(respuesta.status, 201);
+  assert.equal(respuesta.body.mensaje, 'Suscripción renovada con éxito.');
+
+  const nuevaSub = await Suscripcion.findOne({
+    where: { socioId: socioIdPrueba },
+    order: [['fechaVencimiento', 'DESC']]
+  });
+
+  assert.equal(nuevaSub.fechaVencimiento, fechaElegidaStr, 'Debe usar la fecha elegida por el administrador');
+  assert.equal(nuevaSub.comentario, '3er mes renovado', 'Debe guardar el comentario escrito por el administrador');
+});
+
+test('renovar con una fecha anterior a la fecha de inicio devuelve 400', async () => {
+  const ayer = new Date();
+  ayer.setDate(ayer.getDate() - 1);
+
+  await Suscripcion.create({
+    socioId: socioIdPrueba,
+    fechaInicio: '2026-08-01',
+    fechaVencimiento: ayer.toISOString().slice(0, 10),
+    estado: 'Vencida'
+  });
+
+  const respuesta = await request(app)
+    .post(`/api/suscripciones/renovar/${socioIdPrueba}`)
+    .send({ fechaVencimiento: '2020-01-01' });
+
+  assert.equal(respuesta.status, 400);
 });
