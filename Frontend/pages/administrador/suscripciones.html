@@ -142,11 +142,11 @@
           <table>
             <thead>
               <tr>
-                <th>Nombre</th><th>Contacto</th><th>Inicio</th><th>Vencimiento</th><th>Días restantes</th><th>Estado</th><th>Acciones</th>
+                <th>Nombre</th><th>Contacto</th><th>Inicio</th><th>Vencimiento</th><th>Días restantes</th><th>Estado</th><th>Comentario</th><th>Acciones</th>
               </tr>
             </thead>
             <tbody id="tablaVencimientos">
-              <tr><td colspan="7" class="msg-fila">Cargando...</td></tr>
+              <tr><td colspan="8" class="msg-fila">Cargando...</td></tr>
             </tbody>
           </table>
         </div>
@@ -185,6 +185,35 @@
       </form>
     </div>
 
+    <!-- Modal: renovar suscripción -->
+    <div id="modalRenovar" class="modal">
+      <form id="formRenovar" class="modal-card">
+        <h2>Renovar suscripción</h2>
+
+        <div class="form-group">
+          <label for="renovarSocio">Socio</label>
+          <input type="text" id="renovarSocio" disabled />
+        </div>
+
+        <div class="form-group">
+          <label for="renovarFecha">Nueva fecha de vencimiento</label>
+          <input type="date" id="renovarFecha" name="fechaVencimiento" required />
+        </div>
+
+        <div class="form-group">
+          <label for="renovarComentario">Comentario</label>
+          <textarea id="renovarComentario" name="comentario" rows="3" placeholder="Escribí una nota para esta renovación..."></textarea>
+        </div>
+
+        <div id="form-msg-renovar" class="form__msg"></div>
+
+        <div class="modal-actions">
+          <button type="button" id="btnCerrarRenovar" class="btn-primary btn-secondary">Cancelar</button>
+          <button type="submit" class="btn-primary">Renovar</button>
+        </div>
+      </form>
+    </div>
+
     <footer class="site-footer">
       <div class="wrap">
         <div class="site-footer__logo">POWER<span> GYM</span></div>
@@ -194,5 +223,11 @@
 
     <script src="/Frontend/js/components/nav.js"></script>
 <script type="module" src="/Frontend/js/views/suscripciones.js"></script>
+
+    <!-- NOTIFICACIÓN -->
+    <div id="notificacion" class="notificacion">
+      <span id="notificacionIcono"></span>
+      <span id="notificacionTexto"></span>
+    </div>
   </body>
 </html>

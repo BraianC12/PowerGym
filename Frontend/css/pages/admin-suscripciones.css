@@ -138,3 +138,12 @@
     width: 100%;
   }
 }
+
+/* ---------- Modal de renovación ---------- */
+
+.celda-comentario {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

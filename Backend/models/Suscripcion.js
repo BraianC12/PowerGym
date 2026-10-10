@@ -7,7 +7,8 @@ Suscripcion.init({
   suscripcionId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   fechaInicio: { type: DataTypes.DATEONLY, allowNull: false },
   fechaVencimiento: { type: DataTypes.DATEONLY, allowNull: false },
-  estado: { type: DataTypes.STRING, defaultValue: 'Vigente' } // Puede ser Vigente, Vencida, Cancelada
+  estado: { type: DataTypes.STRING, defaultValue: 'Vigente' }, // Puede ser Vigente, Vencida, Cancelada
+  comentario: { type: DataTypes.STRING, allowNull: true } // Nota escrita por el administrador al renovar
 }, { 
   sequelize, 
   modelName: 'Suscripcion', 
