@@ -104,6 +104,14 @@
   background: var(--pg-ink);
 }
 
+.action-btn.activate {
+  background: #10b981;
+}
+
+.action-btn.activate:hover {
+  background: #059669;
+}
+
 /* ---------- Alias que genera el JS del panel del entrenador ---------- */
 
 .btn.ghost-btn {
@@ -126,6 +134,17 @@
 
 .btn.danger:hover {
   background: var(--accent-deep);
+  color: var(--text-invert);
+}
+
+.btn.success {
+  border: 1px solid #10b981;
+  background: transparent;
+  color: #10b981;
+}
+
+.btn.success:hover {
+  background: #10b981;
   color: var(--text-invert);
 }
 

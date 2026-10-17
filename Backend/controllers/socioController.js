@@ -145,4 +145,30 @@ const editarSocio = async (req, res) => {
   }
 };
 
-module.exports = { crearSocio, darDeBajaSocio, obtenerSocios, obtenerSocioPorId,editarSocio };
+// endpoint PATCH: reactivar socio
+const reactivarSocio = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isSafeInteger(id) || id <= 0) {
+      return res.status(400).json({ error: "El ID debe ser un numero entero positivo." });
+    }
+
+    const socio = await Socio.findByPk(id, { include: [{ model: Persona }] });
+    if (!socio) return res.status(404).json({ error: 'Socio no encontrado' });
+
+    if (socio.estado === 'Activo') {
+      return res.status(400).json({ mensaje: 'El socio ya se encuentra activo.' });
+    }
+
+    socio.estado = 'Activo';
+    socio.fechaBaja = null;
+    await socio.save();
+
+    return res.status(200).json({ mensaje: 'Socio reactivado correctamente', socio });
+  } catch (error) {
+    console.error('Error al reactivar el socio:', error);
+    return res.status(500).json({ error: 'Error al reactivar el socio', detalle: error.message });
+  }
+};
+
+module.exports = { crearSocio, darDeBajaSocio, reactivarSocio, obtenerSocios, obtenerSocioPorId, editarSocio };

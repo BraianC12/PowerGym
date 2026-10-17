@@ -4,7 +4,7 @@
 // request() y nunca escribe fetch a mano.
 // ==========================================================
 
-import { token, limpiar, LOGIN_URL } from "./sesion.js";
+import { token, limpiar, rutaLogin, LOGIN_URL } from "./sesion.js";
 
 export const API_BASE = "http://localhost:3000/api";
 
@@ -48,7 +48,7 @@ export async function request(ruta, { method = "GET", body, error } = {}) {
     // repita. El propio login no redirige acá, si no se cicla.
     if (respuesta.status === 401 && ruta !== "/login") {
       limpiar();
-      window.location.replace(LOGIN_URL);
+      window.location.replace(rutaLogin());
     }
 
     throw new ApiError(

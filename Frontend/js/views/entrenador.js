@@ -5,7 +5,7 @@
 // profesor se guarda aparte, recortada a 900px.
 // ==========================================================
 
-import { obtenerSocios, crearSocio, editarSocio, darDeBajaSocio } from "../api/sociosApi.js";
+import { obtenerSocios, crearSocio, editarSocio, darDeBajaSocio, reactivarSocio } from "../api/sociosApi.js";
 import { $, esc } from "../components/dom.js";
 import { toast } from "../components/notifications.js";
 import { exigirSesion, limpiar, LOGIN_URL } from "../api/sesion.js";
@@ -168,7 +168,7 @@ function render() {
         `<td><div class="acts"><button class="btn ghost-btn sm" data-a="edit" data-id="${s.id}">Editar</button>` +
         (on
           ? `<button class="btn danger sm" data-a="baja" data-id="${s.id}">Dar de baja</button>`
-          : ``) +
+          : `<button class="btn success sm" data-a="alta" data-id="${s.id}">Reactivar</button>`) +
         `</div></td></tr>`
       );
     })
@@ -255,6 +255,21 @@ function initForm() {
         await darDeBajaSocio(id);
 
         toast("Socio dado de baja");
+
+        await cargarSocios();
+
+      } catch (error) {
+        console.error(error);
+
+        toast(error.message);
+      }
+    }
+
+    if (b.dataset.a === "alta" && confirm(`¿Reactivar a ${s.nombre} ${s.apellido}?`)) {
+      try {
+        await reactivarSocio(id);
+
+        toast("Socio reactivado");
 
         await cargarSocios();
 

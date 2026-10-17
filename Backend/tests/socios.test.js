@@ -152,3 +152,30 @@ for (const id of ['abc', '0', '-1', '1.5']) {
     assert.equal(respuesta.status, 400);
   });
 }
+
+test('da de baja y luego reactiva al socio correctamente', async () => {
+  const bajaRes = await request(app).patch(`/api/socios/${socioId}`);
+  assert.equal(bajaRes.status, 200);
+
+  let socio = await Socio.findByPk(socioId);
+  assert.equal(socio.estado, 'Inactivo');
+  assert.notEqual(socio.fechaBaja, null);
+
+  const reactivarRes = await request(app).patch(`/api/socios/${socioId}/reactivar`);
+  assert.equal(reactivarRes.status, 200);
+  assert.equal(reactivarRes.body.mensaje, 'Socio reactivado correctamente');
+
+  socio = await Socio.findByPk(socioId);
+  assert.equal(socio.estado, 'Activo');
+  assert.equal(socio.fechaBaja, null);
+});
+
+test('rechaza reactivar un socio que ya está activo', async () => {
+  const respuesta = await request(app).patch(`/api/socios/${socioId}/reactivar`);
+  assert.equal(respuesta.status, 400);
+});
+
+test('rechaza reactivar un socio que no existe', async () => {
+  const respuesta = await request(app).patch('/api/socios/999999/reactivar');
+  assert.equal(respuesta.status, 404);
+});

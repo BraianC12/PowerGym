@@ -47,7 +47,7 @@ const login = async (req, res) => {
             usuario: {
                 id: administrador.administradorId,
                 nombre: administrador.Persona.nombre,
-                email: administrador.Personaemail,
+                email: administrador.Persona.email,
                 rol: administrador.rol
             }
         });
