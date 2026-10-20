@@ -36,3 +36,11 @@ export function darDeBajaSocio(socioId) {
     error: "Error al dar de baja",
   });
 }
+
+// Reactivar socio
+export function reactivarSocio(socioId) {
+  return request(`${RUTA}/${socioId}/reactivar`, {
+    method: "PATCH",
+    error: "Error al reactivar el socio",
+  });
+}

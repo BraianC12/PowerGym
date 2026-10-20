@@ -90,11 +90,16 @@ const editarStaff = async (req, res) => {
             email: email || admin.Persona.email
         });
 
-        await admin.update({
+        const datosActualizar = {
             nombreUsuario: nombreUsuario || admin.nombreUsuario,
-            rol: rol || admin.rol,
-            contrasena: contrasena || admin.contrasena
-        });
+            rol: rol || admin.rol
+        };
+
+        if (contrasena && typeof contrasena === 'string' && contrasena.trim() !== '') {
+            datosActualizar.contrasena = await bcrypt.hash(contrasena.trim(), 12);
+        }
+
+        await admin.update(datosActualizar);
 
         return res.status(200).json({
             mensaje: "Datos del staff actualizados correctamente",

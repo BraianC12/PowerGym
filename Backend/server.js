@@ -1,7 +1,6 @@
 require('dotenv').config();
 const app = require('./app')
 const{sequelize}=require('./models')
-const authRoutes = require('./routes/authRoutes');
 const {iniciarAvisosAutomaticos}=require('./tareas/avisosAutomaticos')
 
 const PORT = process.env.PORT || 3000;
@@ -19,5 +18,3 @@ sequelize.sync()
     console.error('Error al sincronizar la base de datos:', error);
     process.exitCode = 1;
   });
-
-app.use('/api', authRoutes);

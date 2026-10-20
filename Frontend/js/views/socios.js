@@ -4,6 +4,7 @@ import {
   crearSocio,
   editarSocio,
   darDeBajaSocio,
+  reactivarSocio,
 } from "../api/sociosApi.js";
 
 // ---- Componentes ----
@@ -181,23 +182,31 @@ function render() {
           </td>
 
           <td>
+            ${esInactivo(s)
+              ? `
+                <button
+                  class="action-btn activate"
+                  onclick="reactivar(${Number(s.socioId)})"
+                >
+                  Reactivar
+                </button>
+              `
+              : `
+                <button
+                  class="action-btn edit"
+                  onclick="abrirEditarSocio(${Number(s.socioId)})"
+                >
+                  Editar
+                </button>
 
-            <button
-              class="action-btn edit"
-              ${bloqueado}
-              onclick="abrirEditarSocio(${Number(s.socioId)})"
-            >
-              Editar
-            </button>
-
-            <button
-              class="action-btn delete"
-              ${bloqueado}
-              onclick="darDeBaja(${Number(s.socioId)})"
-            >
-              Dar de baja
-            </button>
-
+                <button
+                  class="action-btn delete"
+                  onclick="darDeBaja(${Number(s.socioId)})"
+                >
+                  Dar de baja
+                </button>
+              `
+            }
           </td>
 
         </tr>
@@ -579,6 +588,35 @@ async function darDeBaja(socioId) {
   }
 }
 
+// ======================================================
+// REACTIVAR SOCIO
+// ======================================================
+
+async function reactivar(socioId) {
+  const socio = sociosCargados.find(
+    (s) => Number(s.socioId) === Number(socioId),
+  );
+
+  if (!socio) {
+    alert("No se encontró el socio.");
+    return;
+  }
+
+  const p = socio.Persona;
+  const nombre = p ? `${p.nombre} ${p.apellido}` : `ID ${socioId}`;
+
+  if (!confirm(`¿Reactivar al socio ${nombre}?`)) {
+    return;
+  }
+
+  try {
+    await reactivarSocio(socioId);
+    cargarSocios();
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
 
 // ======================================================
 // HACER FUNCIONES ACCESIBLES DESDE EL HTML
@@ -586,6 +624,7 @@ async function darDeBaja(socioId) {
 
 window.abrirEditarSocio = abrirEditarSocio;
 window.darDeBaja = darDeBaja;
+window.reactivar = reactivar;
 
 
 // ======================================================
