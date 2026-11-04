@@ -1,0 +1,11 @@
+{
+  "name": "powergym",
+  "version": "1.0.0",
+  "description": "PowerGym - Sistema de Gestión de Gimnasio",
+  "scripts": {
+    "dev": "npm --prefix Backend run dev",
+    "start": "npm --prefix Backend start",
+    "test": "npm --prefix Backend test",
+    "seed": "npm --prefix Backend run seed"
+  }
+}
